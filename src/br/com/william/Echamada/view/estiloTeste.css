@@ -1,0 +1,21 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 20/12/2019, 13:55:59
+    Author     : willi
+*/
+.table-view, .tree-table-view {
+    /* Constants used throughout the tableview. */
+    -fx-table-header-border-color: transparent;
+/*    -fx-table-cell-border-color: -fx-box-border;  Horizontal Lines*/
+    -fx-background-color: transparent;
+}
+
+.table-cell {
+    -fx-border-color: transparent; /* Vertical Lines*/    
+    
+}
+
