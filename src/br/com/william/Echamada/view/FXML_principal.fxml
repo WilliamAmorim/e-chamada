@@ -144,6 +144,106 @@
                <children>
                   <Accordion maxWidth="280.0" prefWidth="280.0">
                     <panes>
+                        <TitledPane animated="false" layoutX="10.0" layoutY="85.0" text="Filtrar">
+                           <content>
+                              <VBox prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                    <GridPane>
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="91.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="189.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                       <children>
+                                          <ComboBox fx:id="combo_serieFiltro" prefWidth="150.0" GridPane.columnIndex="1" />
+                                          <ComboBox fx:id="combo_turmaFiltro" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <ComboBox fx:id="combo_turnoFiltro" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                          <ComboBox fx:id="combo_statusFiltro" layoutX="100.0" layoutY="83.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                          <ComboBox fx:id="combo_generoFiltro" layoutX="100.0" layoutY="113.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                          <Label text="Serie:" />
+                                          <Label layoutX="20.0" layoutY="27.0" text="Turma:" GridPane.rowIndex="1" />
+                                          <Label layoutX="20.0" layoutY="57.0" text="Turno:" GridPane.rowIndex="2" />
+                                          <Label layoutX="20.0" layoutY="87.0" text="Status:" GridPane.rowIndex="3" />
+                                          <Label layoutX="20.0" layoutY="117.0" text="Genero:" GridPane.rowIndex="4" />
+                                       </children>
+                                    </GridPane>
+                                    <HBox prefHeight="30.0" prefWidth="258.0">
+                                       <children>
+                                          <Button mnemonicParsing="false" onAction="#BT_filtrarAluno" prefHeight="25.0" prefWidth="86.0" text="Filtrar" />
+                                          <Button mnemonicParsing="false" onAction="#BT_limparFiltro" prefHeight="25.0" prefWidth="96.0" text="Limpar Filtro">
+                                             <HBox.margin>
+                                                <Insets left="5.0" />
+                                             </HBox.margin>
+                                          </Button>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets top="6.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </content>
+                        </TitledPane>
+                        <TitledPane animated="false" text="Liberar">
+                           <content>
+                              <VBox maxHeight="1.7976931348623157E308" prefWidth="278.0">
+                                 <children>
+                                    <GridPane>
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="91.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="189.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <ComboBox fx:id="combo_serieLiberados" prefWidth="150.0" GridPane.columnIndex="1" />
+                                          <ComboBox fx:id="combo_turmaLiberados" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <ComboBox fx:id="combo_turnoLiberados" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                          <Label text="Serie:" />
+                                          <Label layoutX="20.0" layoutY="27.0" text="Turma:" GridPane.rowIndex="1" />
+                                          <Label layoutX="20.0" layoutY="57.0" text="Turno:" GridPane.rowIndex="2" />
+                                          <Label layoutX="20.0" layoutY="87.0" text="Aluno:" GridPane.rowIndex="3" />
+                                          <Label layoutX="20.0" layoutY="117.0" text="Periodo:" GridPane.rowIndex="4" />
+                                          <TextField fx:id="txt_alunoLiberados" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                          <DatePicker fx:id="date_periodoLiberados" prefHeight="25.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                       </children>
+                                    </GridPane>
+                                    <VBox prefHeight="100.0" prefWidth="100.0">
+                                       <children>
+                                          <TextArea fx:id="txt_mensagem" prefHeight="100.0" prefWidth="150.0" promptText="Mensagem" />
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets top="8.0" />
+                                       </VBox.margin>
+                                    </VBox>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="258.0">
+                                       <children>
+                                          <Button fx:id="BT_liberar" mnemonicParsing="false" onAction="#BT_liberar" prefHeight="25.0" prefWidth="86.0" text="Liberar" />
+                                          <CheckBox fx:id="check_todosLiberados" mnemonicParsing="false" text="Todos">
+                                             <HBox.margin>
+                                                <Insets left="9.0" />
+                                             </HBox.margin>
+                                          </CheckBox>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets top="6.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </content>
+                        </TitledPane>
                         <TitledPane animated="false" text="Editar/Cadastrar Aluno">
                            <content>
                               <GridPane>
@@ -200,60 +300,6 @@
                               </GridPane>
                            </content>
                         </TitledPane>
-                        <TitledPane animated="false" text="Liberar">
-                           <content>
-                              <VBox maxHeight="1.7976931348623157E308" prefWidth="278.0">
-                                 <children>
-                                    <GridPane>
-                                      <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="91.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="189.0" />
-                                      </columnConstraints>
-                                      <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                      </rowConstraints>
-                                       <children>
-                                          <ComboBox prefWidth="150.0" GridPane.columnIndex="1" />
-                                          <ComboBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                          <ComboBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                          <Label text="Serie:" />
-                                          <Label layoutX="20.0" layoutY="27.0" text="Turma:" GridPane.rowIndex="1" />
-                                          <Label layoutX="20.0" layoutY="57.0" text="Turno:" GridPane.rowIndex="2" />
-                                          <Label layoutX="20.0" layoutY="87.0" text="Aluno:" GridPane.rowIndex="3" />
-                                          <Label layoutX="20.0" layoutY="117.0" text="Periodo:" GridPane.rowIndex="4" />
-                                          <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                          <DatePicker prefHeight="25.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                       </children>
-                                    </GridPane>
-                                    <VBox prefHeight="100.0" prefWidth="100.0">
-                                       <children>
-                                          <TextArea prefHeight="100.0" prefWidth="150.0" promptText="Mensagem" />
-                                       </children>
-                                       <VBox.margin>
-                                          <Insets top="8.0" />
-                                       </VBox.margin>
-                                    </VBox>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="258.0">
-                                       <children>
-                                          <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="86.0" text="Liberar" />
-                                          <CheckBox mnemonicParsing="false" text="Todos">
-                                             <HBox.margin>
-                                                <Insets left="9.0" />
-                                             </HBox.margin>
-                                          </CheckBox>
-                                       </children>
-                                       <VBox.margin>
-                                          <Insets top="6.0" />
-                                       </VBox.margin>
-                                    </HBox>
-                                 </children>
-                              </VBox>
-                           </content>
-                        </TitledPane>
                         <TitledPane animated="false" layoutX="10.0" layoutY="85.0" prefWidth="280.0" text="Editar/Cadastrar Pais">
                            <content>
                               <VBox prefWidth="100.0">
@@ -270,8 +316,8 @@
                                        </rowConstraints>
                                        <children>
                                           <Label text="ID Aluno:" />
-                                          <Label layoutX="20.0" layoutY="27.0" text="Label" GridPane.rowIndex="1" />
-                                          <Label layoutX="20.0" layoutY="57.0" text="Label" GridPane.rowIndex="2" />
+                                          <Label layoutX="20.0" layoutY="27.0" text="Usuario:" GridPane.rowIndex="1" />
+                                          <Label layoutX="20.0" layoutY="57.0" text="Senha:" GridPane.rowIndex="2" />
                                           <TextField maxWidth="60.0" GridPane.columnIndex="1" />
                                           <TextField layoutX="90.0" layoutY="13.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                           <TextField layoutX="90.0" layoutY="43.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -280,52 +326,6 @@
                                     <HBox prefHeight="30.0" prefWidth="258.0">
                                        <children>
                                           <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="86.0" text="Cadastrar" />
-                                       </children>
-                                       <VBox.margin>
-                                          <Insets top="6.0" />
-                                       </VBox.margin>
-                                    </HBox>
-                                 </children>
-                              </VBox>
-                           </content>
-                        </TitledPane>
-                        <TitledPane animated="false" layoutX="10.0" layoutY="85.0" text="Filtrar">
-                           <content>
-                              <VBox prefHeight="200.0" prefWidth="100.0">
-                                 <children>
-                                    <GridPane>
-                                       <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="91.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="189.0" />
-                                       </columnConstraints>
-                                       <rowConstraints>
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                       </rowConstraints>
-                                       <children>
-                                          <ComboBox prefWidth="150.0" GridPane.columnIndex="1" />
-                                          <ComboBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                          <ComboBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                          <ComboBox layoutX="100.0" layoutY="83.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                          <ComboBox layoutX="100.0" layoutY="113.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                          <Label text="Serie:" />
-                                          <Label layoutX="20.0" layoutY="27.0" text="Turma:" GridPane.rowIndex="1" />
-                                          <Label layoutX="20.0" layoutY="57.0" text="Turno:" GridPane.rowIndex="2" />
-                                          <Label layoutX="20.0" layoutY="87.0" text="Status:" GridPane.rowIndex="3" />
-                                          <Label layoutX="20.0" layoutY="117.0" text="Genero:" GridPane.rowIndex="4" />
-                                       </children>
-                                    </GridPane>
-                                    <HBox prefHeight="30.0" prefWidth="258.0">
-                                       <children>
-                                          <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="86.0" text="Filtrar" />
-                                          <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="96.0" text="Limpar Filtro">
-                                             <HBox.margin>
-                                                <Insets left="5.0" />
-                                             </HBox.margin>
-                                          </Button>
                                        </children>
                                        <VBox.margin>
                                           <Insets top="6.0" />
@@ -372,23 +372,36 @@
                         </TableView>
                      </content>
                 </Tab>
-                  <Tab text="Historico">
+                  <Tab text="Liberados">
                      <content>
-                        <TableView prefHeight="200.0" prefWidth="200.0">
+                        <TableView fx:id="tabela_Liberados" prefHeight="200.0" prefWidth="200.0">
                           <columns>
-                            <TableColumn prefWidth="75.0" text="C1" />
-                            <TableColumn prefWidth="75.0" text="C2" />
+                            <TableColumn fx:id="coluna_parametro" prefWidth="75.0" text="Parametro" />
+                            <TableColumn fx:id="coluna_prazo" prefWidth="75.0" text="Prazo" />
+                              <TableColumn fx:id="coluna_dataLiberados" prefWidth="75.0" text="Data" visible="false" />
+                              <TableColumn fx:id="coluna_mensagem" prefWidth="75.0" text="Mensagem" />
                           </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
                         </TableView>
                      </content>
                   </Tab>
-                  <Tab text="Liberados">
+                  <Tab text="Historico">
                      <content>
-                        <TableView prefHeight="200.0" prefWidth="200.0">
+                        <TableView fx:id="tabela_historico" prefHeight="200.0" prefWidth="200.0">
                           <columns>
-                            <TableColumn prefWidth="75.0" text="C1" />
-                            <TableColumn prefWidth="75.0" text="C2" />
+                            <TableColumn fx:id="colunaNomeHistorico" prefWidth="75.0" text="Nome" />
+                            <TableColumn fx:id="coluna_dataHistorico" prefWidth="75.0" text="Data" />
+                              <TableColumn fx:id="coluna_aula01" prefWidth="75.0" text="Aula 01" />
+                              <TableColumn fx:id="coluna_aula02" prefWidth="75.0" text="Aula 02" />
+                              <TableColumn fx:id="coluna_aula03" prefWidth="75.0" text="Aula 03" />
+                              <TableColumn fx:id="coluna_aula04" prefWidth="75.0" text="Aula 04" />
+                              <TableColumn fx:id="coluna_aula05" prefWidth="75.0" text="Aula 05" />
                           </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
                         </TableView>
                      </content>
                   </Tab>

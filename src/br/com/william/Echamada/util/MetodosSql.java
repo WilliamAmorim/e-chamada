@@ -41,4 +41,34 @@ public class MetodosSql extends Sql{
         }
         
     }
+    public String criarQueryAluno(String serie,String turma,String turno,String status,String genero){
+        String query = "SELECT * FROM `alunos` WHERE 1 ";
+        
+        if(serie != null){
+            query += " AND serie = '"+serie+"'";System.out.println("serie");
+        }
+        
+        if(turma != null){
+            query += " AND turma = '"+turma+"'";System.out.println("turma");
+        }
+        
+        if(turno != null){
+            query += " AND turno = '"+turno+"'";System.out.println("turno");
+        }
+        
+        if(status != null){
+            if(status.equals("Ativo")){
+                status = "1";                
+            }else{
+                status = "0";
+            }
+            query += " AND status = '"+status+"'";System.out.println("Status");
+        }
+        
+        if(genero != null){
+            query += " AND sexo = '"+genero+"'";System.out.println("genero");
+        }
+        System.out.println(query);
+        return query;
+    }
 }

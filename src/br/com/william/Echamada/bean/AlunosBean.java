@@ -13,6 +13,15 @@ import javafx.beans.property.StringProperty;
  * @author willi
  */
 public class AlunosBean {
+    private StringProperty status;
+
+    public StringProperty getStatus() {
+        return status;
+    }
+
+    public void setStatus(StringProperty status) {
+        this.status = status;
+    }
     private StringProperty id;    
     private StringProperty aluno;
     private StringProperty data_nascimento;
@@ -33,7 +42,8 @@ public class AlunosBean {
         this.id = id;
     }
     
-    public AlunosBean(String id,String aluno,String data_nascimento,String sexo,String endereco,String nome_pai,String nome_mae,String telefone,String serie,String turma,String turno ){
+    public AlunosBean(String status,String id,String aluno,String data_nascimento,String sexo,String endereco,String nome_pai,String nome_mae,String telefone,String serie,String turma,String turno ){
+        this.status = new SimpleStringProperty(status);
         this.id = new SimpleStringProperty(id);
         this.aluno = new SimpleStringProperty(aluno);
         this.data_nascimento = new SimpleStringProperty(data_nascimento);
