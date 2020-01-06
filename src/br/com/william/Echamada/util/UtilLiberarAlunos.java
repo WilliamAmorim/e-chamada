@@ -37,7 +37,7 @@ public class UtilLiberarAlunos {
                 values.add("T"+turma);escolhido++;System.out.println("escolhe 3");
             }
             
-            if(!"".equals(turno)){
+            if(turno != null){
                 values.add(turno);escolhido++;System.out.println("escolhe 4");
             }
             if(!"".equals(aluno)){

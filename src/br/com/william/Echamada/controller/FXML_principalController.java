@@ -38,7 +38,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javax.swing.table.DefaultTableModel;
 
 /**
  * FXML Controller class
@@ -158,6 +157,7 @@ public class FXML_principalController implements Initializable {
     @FXML
     void BT_cadastrarAluno(ActionEvent event) {   
         try{
+            atualizarTabelas();
             progress.setProgress(50);
             cadastrarAluno();
             progress.setProgress(0);       
@@ -174,8 +174,13 @@ public class FXML_principalController implements Initializable {
                 switch(tabela_aluno.getSelectionModel().getSelectedIndex()){
                     case -1:operacao = "cadastrar";System.out.println("Cadastrando");break;
                     default:operacao = "update";System.out.println("Update");break;
-                }        
-                execute.CadastrarAluno(operacao,"456987", txt_nomeAluno.getText(),txt_senhaAluno.getText(),date_dataNascimentoAluno.getValue(), combo_sexoAluno.getValue()+"", txt_enderecoAluno.getText(), nome_pai.getText(), txt_nomeMae.getText(), txt_telefone.getText(), combo_serie.getValue()+"", combo_turma.getValue()+"", combo_turno.getValue()+"",ConteudoTabelaAluno.get(i).getId().getValue());                //ConteudoTabelaAluno.get(i).getId().getValue()
+                }
+                String Id = "";
+                if(ConteudoTabelaAluno.size() > 0){
+                    Id = ConteudoTabelaAluno.get(i).getId().getValue();
+                }
+                execute.CadastrarAluno(operacao,"456987", txt_nomeAluno.getText(),txt_senhaAluno.getText(),date_dataNascimentoAluno.getValue(), combo_sexoAluno.getValue()+"", txt_enderecoAluno.getText(), nome_pai.getText(), txt_nomeMae.getText(), txt_telefone.getText(), combo_serie.getValue()+"", combo_turma.getValue()+"", combo_turno.getValue()+"",Id);                //ConteudoTabelaAluno.get(i).getId().getValue()
+                System.err.println("Cadastrado");
                 listaTabelaAlunos(); 
                 //BT_cadastrarAluno.setText("Cadastrar");
            // }
@@ -230,14 +235,14 @@ public class FXML_principalController implements Initializable {
         Sql novo = new Sql();
         ArrayList valores = new ArrayList();
         ArrayList resultadoQuery = new ArrayList();
-        String[] resultado = {"id_aluno","nome_aluno", "data_nascimento", "sexo", "endereco", "nome_pai","nome_mae","telefone_responsavel","serie","turma","turno"};       
+        String[] resultado = {"id_aluno","nome_aluno", "data_nascimento", "sexo", "endereco", "nome_pai","nome_mae","telefone_responsavel","serie","turma","turno","status"};       
         resultadoQuery = novo.executeQuery(m.criarQueryAluno((String)combo_serieFiltro.getValue(), (String)combo_turmaFiltro.getValue(), (String)combo_turnoFiltro.getValue(), (String)combo_statusFiltro.getValue(), (String)combo_generoFiltro.getValue()), valores, resultado);
         for (int i = 0; i <= resultadoQuery.size() - 1; i++) {
             String a = resultadoQuery.get(i).toString();
             String b = a.replace("[", "").replace("]", "");
             String[] tokens = b.split(",");            
             ConteudoTabelaAluno.add(new AlunosBean("alsente",tokens[0].trim(),tokens[1].trim(),tokens[2].trim(),tokens[3].trim(), tokens[4].trim(),tokens[5].trim(),tokens[6].trim(),tokens[7].trim(),tokens[8].trim(),tokens[9].trim(),tokens[10].trim()));
-            listaHistorico(tokens[1].trim(),(int)Float.parseFloat(tokens[0]),tokens[8].trim() , tokens[9].trim());
+            listaHistorico(tokens[1].trim(),(int)Float.parseFloat(tokens[0]),tokens[10].trim() , tokens[11].trim());
         }
     }
     //**************************************************************************
@@ -265,13 +270,15 @@ public class FXML_principalController implements Initializable {
         Sql novo = new Sql();
         ArrayList valores = new ArrayList();
         ArrayList resultadoQuery = new ArrayList();
-        String[] resultado = {"parametro","prazo", "hora", "mensagem"};       
+        String[] resultado = {"status","parametro","prazo", "hora", "mensagem"};       
         resultadoQuery = novo.executeQuery("SELECT * FROM `liberados` WHERE 1", valores, resultado);
         for (int i = 0; i <= resultadoQuery.size() - 1; i++) {
             String a = resultadoQuery.get(i).toString();
             String b = a.replace("[", "").replace("]", "");
-            String[] tokens = b.split(",");            
-            ConteudoTabelaLiberados.add(new LiberadosBean(tokens[0].trim(),tokens[1].trim(),tokens[2].trim(),tokens[3].trim()));
+            String[] tokens = b.split(",");     
+            System.out.println("Status liberados:"+tokens[0]);
+            ConteudoTabelaLiberados.add(new LiberadosBean(tokens[0].trim(),tokens[1].trim(),tokens[2].trim(),tokens[3].trim(),tokens[4].trim()));
+            Util.verificarData(tokens[2], Util.time());
         }
     }
     //**************************************************************************
@@ -397,6 +404,20 @@ public class FXML_principalController implements Initializable {
             }
         });
         
+        tabela_Liberados.setRowFactory(tv -> new TableRow<LiberadosBean>() {
+            public void updateItem(LiberadosBean item, boolean empty) {
+                super.updateItem(item, empty) ;
+                if(item == null){
+                    setStyle("");
+                }else if(item.getStatus().getValue().equals("1")){                    
+                    setStyle("-fx-background-color:#43CD80;");
+                }else if(item.getStatus().getValue().equals("0")){
+                    setStyle("-fx-background-color:red;");
+                }else{
+                    setStyle("");
+                }
+            }
+        });
         
         for (int h = 1; h <= 5; h++) {
             
@@ -464,10 +485,10 @@ public class FXML_principalController implements Initializable {
     } 
     
     
-    public void listaHistorico(String nome,int id,String turno,String turma){
+    public void listaHistorico(String nome,int id,String turno,String status){
         ListaHistorico his = new ListaHistorico();
         ArrayList retorno = new ArrayList();
-        retorno = his.lista(nome, id, "04/01/2020",turno,turma);
+        retorno = his.lista(nome, id, "",turno,status);
         System.out.println("ID:"+id);
        // for (int j = 0; j < retorno.size(); j++) {
        //System.out.println(retorno.get(0)+" - "+retorno.get(1)+" - "+retorno.get(2)+" - "+retorno.get(3)+" - "+retorno.get(4)+" - "+retorno.get(5)+" - "+retorno.get(6));
@@ -484,7 +505,8 @@ public class FXML_principalController implements Initializable {
                 if(continuar){
                     TimerTask tarefa = new TimerTask(){
                     @Override
-                    public void run(){     
+                    public void run(){  
+                        System.out.println("********************\nExecutando Verificação\n********************");
                         for (int j = 0; j <= ConteudoTabelaAluno.size(); j++) {
                             
                             int id = (int)Float.parseFloat(ConteudoTabelaAluno.get(j).getId().getValue());
@@ -497,8 +519,7 @@ public class FXML_principalController implements Initializable {
                             }
                             
                             if(result){
-                                ConteudoTabelaAluno.get(id).getStatus().setValue("presente");
-                                
+                                ConteudoTabelaAluno.get(id).getStatus().setValue("presente");                                
                             }else{
                                 ConteudoTabelaAluno.get(id).getStatus().setValue("alsente");
                             }
@@ -516,6 +537,17 @@ public class FXML_principalController implements Initializable {
             System.out.println("############################################Ocorreu um erro:"+e);
         }
 
+    }
+    
+    public void atualizarTabelas(){
+        //atualizando todas as tabelas
+        try{
+            listaTabelaAlunos();
+            listaTabelaLiberados();    
+        }catch(Exception ex){
+            System.err.println("********************\nErro ao lista Tabela:\n"+ex+"\n**********************");
+        }
+        
     }
 }
         

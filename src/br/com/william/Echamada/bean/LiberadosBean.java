@@ -17,6 +17,7 @@ public class LiberadosBean {
     private StringProperty  prazo;
     private StringProperty  hora;
     private StringProperty  mensagem;
+    private StringProperty  status;
 
     public StringProperty getParametro() {
         return parametro;
@@ -49,8 +50,17 @@ public class LiberadosBean {
     public void setMensagem(StringProperty mensagem) {
         this.mensagem = mensagem;
     }
+
+    public StringProperty getStatus() {
+        return status;
+    }
+
+    public void setStatus(StringProperty status) {
+        this.status = status;
+    }
     
-    public LiberadosBean(String parametro,String prazo,String hora,String mensagem){
+    public LiberadosBean(String status,String parametro,String prazo,String hora,String mensagem){
+        this.status = new SimpleStringProperty(status);
         this.parametro = new SimpleStringProperty(parametro);
         this.prazo = new SimpleStringProperty(prazo);
         this.hora = new SimpleStringProperty(hora);

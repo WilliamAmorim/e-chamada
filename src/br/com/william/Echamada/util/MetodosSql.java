@@ -34,10 +34,10 @@ public class MetodosSql extends Sql{
         values.add(serie);
         values.add(turma);
         values.add(turno);        
-        values.add(id);
+        
         switch(operacao){
-            case "cadastrar":executeQuery("INSERT INTO `alunos`(`nome_aluno`, `senha`, `data_nascimento`, `sexo`, `endereco`, `nome_pai`, `nome_mae`, `telefone_responsavel`, `serie`, `turma`, `turno`,`status`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", values);
-            case "update":executeQuery("UPDATE `alunos` SET `nome_aluno`=?, `senha`=?, `data_nascimento`=?, `sexo`=?, `endereco`=?, `nome_pai`=?, `nome_mae`=?, `telefone_responsavel`=?, `serie`=?, `turma`=?, `turno`=? WHERE id_aluno = ?", values);
+            case "cadastrar":values.add(0);executeQuery("INSERT INTO `alunos`(`nome_aluno`, `senha`, `data_nascimento`, `sexo`, `endereco`, `nome_pai`, `nome_mae`, `telefone_responsavel`, `serie`, `turma`, `turno`,`status`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", values);break;
+            case "update":values.add(id);executeQuery("UPDATE `alunos` SET `nome_aluno`=?, `senha`=?, `data_nascimento`=?, `sexo`=?, `endereco`=?, `nome_pai`=?, `nome_mae`=?, `telefone_responsavel`=?, `serie`=?, `turma`=?, `turno`=? WHERE id_aluno = ?", values);break;
         }
         
     }
