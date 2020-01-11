@@ -19,13 +19,13 @@ import java.util.Date;
  */
 public class MetodosSql extends Sql{
     
-    public void CadastrarAluno(String operacao,String codigo,String aluno,String senha,LocalDate data,String sexo,String endereco,String pai,String mae,String telefone,String serie,String turma,String turno,String id){        
+    public void CadastrarAluno(String operacao,String codigo,String aluno,String senha,LocalDate data,String sexo,String endereco,String pai,String mae,String telefone,String serie,String turma,String turno,String id){               
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = Date.from(data.atStartOfDay(ZoneId.systemDefault()).toInstant());     
+        Date date = Date.from(data.atStartOfDay(ZoneId.systemDefault()).toInstant());             
         ArrayList values = new ArrayList();
         values.add(aluno);
         values.add(senha);       
-        values.add(dateFormat.format(date));
+        values.add(Util.converterData(data.toString(), "normal"));//dateFormat.format(date)
         values.add(sexo);
         values.add(endereco);
         values.add(pai);

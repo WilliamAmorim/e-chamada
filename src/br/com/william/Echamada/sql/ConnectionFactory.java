@@ -20,9 +20,9 @@ import java.util.logging.Logger;
 public class ConnectionFactory {
 
     private static final String DRIVER = "com.mysql.jdbc.Driver";
-    private static final String URL = "jdbc:mysql://localhost/bancoEchamada";
-    private static final String USER = "root";
-    private static final String PASS = "";
+    private static final String URL = "jdbc:mysql://sql10.freesqldatabase.com/sql10317981";
+    private static final String USER = "sql10317981";
+    private static final String PASS = "6a8xkffISi";
 
     public static Connection getConnection() {
         try {

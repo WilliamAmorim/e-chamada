@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,6 +29,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableCell;
 //import javafx.scene.control.TableCell;
@@ -47,6 +49,9 @@ import javafx.scene.paint.Color;
 public class FXML_principalController implements Initializable {
     @FXML
     private ProgressBar progress;    
+    @FXML
+    private ListView list_alunos;
+    ObservableList<String> alunosListados = FXCollections.observableArrayList();
     //Tabela_Alunos*************************************************************    
     @FXML
     private TableView<AlunosBean> tabela_aluno;
@@ -80,6 +85,9 @@ public class FXML_principalController implements Initializable {
 
     @FXML
     private TableColumn<AlunosBean, String> coluna_turno;
+    
+    @FXML
+    private TableColumn<AlunosBean, String> coluna_hora;
     
     private ObservableList<AlunosBean> ConteudoTabelaAluno = FXCollections.observableArrayList();
     
@@ -155,26 +163,23 @@ public class FXML_principalController implements Initializable {
     private ComboBox combo_turno;
     
     @FXML
-    void BT_cadastrarAluno(ActionEvent event) {   
-        try{
-            atualizarTabelas();
-            progress.setProgress(50);
-            cadastrarAluno();
-            progress.setProgress(0);       
-        }catch(Exception ex){
-            progress.setProgress(0);       
-        }
+    void BT_cadastrarAluno(ActionEvent event) {           
+                try{
+                    atualizarTabelas();
+                    progress.setProgress(50);
+                    cadastrarAluno();
+                    progress.setProgress(0);       
+                }catch(Exception ex){
+                    progress.setProgress(0);       
+                }
     }
-    
+    String operacao;
     public void cadastrarAluno(){
        // new Thread(){        
          //   public void run(){
                 MetodosSql execute = new MetodosSql(); 
-                String operacao;
-                switch(tabela_aluno.getSelectionModel().getSelectedIndex()){
-                    case -1:operacao = "cadastrar";System.out.println("Cadastrando");break;
-                    default:operacao = "update";System.out.println("Update");break;
-                }
+                
+                
                 String Id = "";
                 if(ConteudoTabelaAluno.size() > 0){
                     Id = ConteudoTabelaAluno.get(i).getId().getValue();
@@ -201,9 +206,13 @@ public class FXML_principalController implements Initializable {
     }
     public int i;
     public void pegarDadosTabelaAlunos(){
+        switch(tabela_aluno.getSelectionModel().getSelectedIndex()){
+                    case -1:operacao = "cadastrar";System.out.println("Cadastrando");break;
+                    default:operacao = "update";System.out.println("Update");break;
+        }
         i = tabela_aluno.getSelectionModel().getSelectedIndex();
         txt_nomeAluno.setText(ConteudoTabelaAluno.get(i).getAluno().getValue());
-        txt_senhaAluno.setText(ConteudoTabelaAluno.get(i).getAluno().getValue());                        
+        txt_senhaAluno.setText(ConteudoTabelaAluno.get(i).getId().getValue());                        
         date_dataNascimentoAluno.setValue(Util.LOCAL_DATE(ConteudoTabelaAluno.get(i).getData_nascimento().getValue().trim()));        
         combo_sexoAluno.setValue(ConteudoTabelaAluno.get(i).getSexo().getValue());
         txt_enderecoAluno.setText(ConteudoTabelaAluno.get(i).getEndereco().getValue());
@@ -213,13 +222,17 @@ public class FXML_principalController implements Initializable {
         combo_serie.setValue(ConteudoTabelaAluno.get(i).getSerie().getValue());
         combo_turma.setValue(ConteudoTabelaAluno.get(i).getTurma().getValue());
         combo_turno.setValue(ConteudoTabelaAluno.get(i).getTurno().getValue());
-        System.out.println("index "+i);
+        System.out.println("index: "+i);
     }
     public void sairDadosTabelaAlunos(){
+        switch(tabela_aluno.getSelectionModel().getSelectedIndex()){
+                    case -1:operacao = "cadastrar";System.out.println("Cadastrando");break;
+                    default:operacao = "update";System.out.println("Update");break;
+                }
         txt_nomeAluno.setText("");
         txt_senhaAluno.setText("");                        
         date_dataNascimentoAluno.setValue(null);        
-        combo_sexoAluno.setValue("");
+        combo_sexoAluno.setValue(null);
         txt_enderecoAluno.setText("");
         nome_pai.setText("");
         txt_nomeMae.setText("");
@@ -229,6 +242,7 @@ public class FXML_principalController implements Initializable {
         combo_turno.setValue(null);
     }  
     public void listaTabelaAlunos(){
+        alunosListados.clear();
         ConteudoTabelaHistorico.clear();
         ConteudoTabelaAluno.clear();
         MetodosSql m = new MetodosSql();
@@ -241,8 +255,9 @@ public class FXML_principalController implements Initializable {
             String a = resultadoQuery.get(i).toString();
             String b = a.replace("[", "").replace("]", "");
             String[] tokens = b.split(",");            
-            ConteudoTabelaAluno.add(new AlunosBean("alsente",tokens[0].trim(),tokens[1].trim(),tokens[2].trim(),tokens[3].trim(), tokens[4].trim(),tokens[5].trim(),tokens[6].trim(),tokens[7].trim(),tokens[8].trim(),tokens[9].trim(),tokens[10].trim()));
+            ConteudoTabelaAluno.add(new AlunosBean("alsente",tokens[0].trim(),tokens[1].trim(),tokens[2].trim(),tokens[3].trim(), tokens[4].trim(),tokens[5].trim(),tokens[6].trim(),tokens[7].trim(),tokens[8].trim(),tokens[9].trim(),tokens[10].trim(),"-"));
             listaHistorico(tokens[1].trim(),(int)Float.parseFloat(tokens[0]),tokens[10].trim() , tokens[11].trim());
+            alunosListados.add(tokens[1]);
         }
     }
     //**************************************************************************
@@ -304,6 +319,7 @@ public class FXML_principalController implements Initializable {
 
     @FXML
     private Button BT_liberar;
+    
     private TableColumn coluna;
 
     @FXML
@@ -354,7 +370,7 @@ public class FXML_principalController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
           // listaHistorico();
-
+        list_alunos.setItems(alunosListados);
         //Inicializando a tabela alunos.
         coluna_aluno.setCellValueFactory(cellData -> cellData.getValue().getAluno());
         coluna_nascimento.setCellValueFactory(cellData -> cellData.getValue().getData_nascimento());
@@ -366,6 +382,7 @@ public class FXML_principalController implements Initializable {
         coluna_serie.setCellValueFactory(cellData -> cellData.getValue().getSerie());
         coluna_turma.setCellValueFactory(cellData -> cellData.getValue().getTurma());
         coluna_turno.setCellValueFactory(cellData -> cellData.getValue().getTurno());
+        coluna_hora.setCellValueFactory(cellData -> cellData.getValue().getHora());
         //**********************************************************************************
         colunaNomeHistorico.setCellValueFactory(cellData -> cellData.getValue().getAluno());
         coluna_dataHistorico.setCellValueFactory(cellData -> cellData.getValue().getData());
@@ -394,12 +411,13 @@ public class FXML_principalController implements Initializable {
         tabela_aluno.setRowFactory(tv -> new TableRow<AlunosBean>() {
             public void updateItem(AlunosBean item, boolean empty) {
                 super.updateItem(item, empty) ;
+                
                 if(item == null){
                     setStyle("");
-                }else if(item.getStatus().equals("presente")){                    
-                    setStyle("-fx-background-color:#43CD80;");
-                }else{
-                    setStyle("-fx-background-color:red;");
+                }else if(item.getStatus().getValue().equals("presente")){                    
+                    setStyle("-fx-background-color:#43CD80;");                     
+                }else if(item.getStatus().getValue().equals("alsente")){
+                    setStyle("-fx-background-color:red;");                    
                 }
             }
         });
@@ -506,10 +524,10 @@ public class FXML_principalController implements Initializable {
                     TimerTask tarefa = new TimerTask(){
                     @Override
                     public void run(){  
-                        System.out.println("********************\nExecutando Verificação\n********************");
-                        for (int j = 0; j <= ConteudoTabelaAluno.size(); j++) {
-                            
-                            int id = (int)Float.parseFloat(ConteudoTabelaAluno.get(j).getId().getValue());
+                        System.out.println("********************\nExecutando Verificação\n********************"+ConteudoTabelaAluno.size());
+                        for (int j = 0; j <= ConteudoTabelaAluno.size()-1; j++) {
+                            String texto = ConteudoTabelaAluno.get(j).getId().getValue();
+                            int id = (int)Float.parseFloat(texto);
                             ListaHistorico lo = new ListaHistorico();          
                             HistoricoBean objeto = new HistoricoBean();
                             objeto = lo.PegarLocalizacao(id,ListaHistorico.time());
@@ -519,9 +537,12 @@ public class FXML_principalController implements Initializable {
                             }
                             
                             if(result){
-                                ConteudoTabelaAluno.get(id).getStatus().setValue("presente");                                
+                                ConteudoTabelaAluno.get(j).getStatus().setValue("presente");                                
+                                ConteudoTabelaAluno.get(j).getHora().setValue(objeto.getHora());                                
+                                
                             }else{
-                                ConteudoTabelaAluno.get(id).getStatus().setValue("alsente");
+                                ConteudoTabelaAluno.get(j).getStatus().setValue("alsente");
+                                ConteudoTabelaAluno.get(j).getHora().setValue(objeto.getHora());                                
                             }
                         }  
                     }                    

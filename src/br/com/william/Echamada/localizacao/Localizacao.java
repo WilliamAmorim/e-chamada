@@ -67,7 +67,7 @@ public class Localizacao {
     
     public HistoricoBean PegarLocalizacao(int id,String data){
         
-        String sql = "SELECT * FROM `historicoLocalizacao` WHERE id_aluno = ? AND data = ?";
+        String sql = "SELECT * FROM `historicolocalizacao` WHERE id_aluno = ? AND data = ?";
         Connection con = ConnectionFactory.getConnection();
         ResultSet resultado = null;
         PreparedStatement his = null;

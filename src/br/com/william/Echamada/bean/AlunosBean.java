@@ -33,7 +33,16 @@ public class AlunosBean {
     private StringProperty serie;
     private StringProperty turma;
     private StringProperty turno;
+    private StringProperty hora;
 
+    public StringProperty getHora() {
+        return hora;
+    }
+
+    public void setHora(StringProperty hora) {
+        this.hora = hora;
+    }
+    
     public StringProperty getId() {
         return id;
     }
@@ -42,7 +51,7 @@ public class AlunosBean {
         this.id = id;
     }
     
-    public AlunosBean(String status,String id,String aluno,String data_nascimento,String sexo,String endereco,String nome_pai,String nome_mae,String telefone,String serie,String turma,String turno ){
+    public AlunosBean(String status,String id,String aluno,String data_nascimento,String sexo,String endereco,String nome_pai,String nome_mae,String telefone,String serie,String turma,String turno,String hora ){
         this.status = new SimpleStringProperty(status);
         this.id = new SimpleStringProperty(id);
         this.aluno = new SimpleStringProperty(aluno);
@@ -55,6 +64,7 @@ public class AlunosBean {
         this.serie = new SimpleStringProperty(serie);
         this.turma = new SimpleStringProperty(turma);
         this.turno = new SimpleStringProperty(turno);
+        this.hora = new SimpleStringProperty(hora);
         
     }
 

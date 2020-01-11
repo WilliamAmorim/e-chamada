@@ -19,7 +19,7 @@ import java.util.Date;
 public class Util {
     public static final LocalDate LOCAL_DATE (String dateString){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate localDate = LocalDate.parse(dateString, formatter);
+        LocalDate localDate = LocalDate.parse(converterData(dateString,"sql"), formatter);
         return localDate;
     }
     
@@ -33,7 +33,7 @@ public class Util {
         ArrayList values = new ArrayList();
         
         Date date2 = new Date(dateHoje);
-        Date date1 = new Date(converterData(dateLiberacao));
+        Date date1 = new Date(converterData(dateLiberacao,"normal"));
        
         if (date1.compareTo(date2) > 0) {         
             //System.out.println("Date1 é posterior a Date2");
@@ -63,8 +63,14 @@ public class Util {
         return df.format(hoje);
     }
     
-    public static String converterData(String data){
-       String[] dividir = data.split("-");
-       return dividir[2]+"/"+dividir[1]+"/"+dividir[0];
+    public static String converterData(String data,String ordem){
+       if(ordem.equals("normal")){ 
+        String[] dividir = data.split("-");
+        return dividir[2]+"/"+dividir[1]+"/"+dividir[0];
+       }else if(ordem.equals("sql")){
+        String[] dividir2 = data.split("/");
+        return dividir2[2]+"-"+dividir2[1]+"-"+dividir2[0];
+       }        
+       return null;
     }
 }
