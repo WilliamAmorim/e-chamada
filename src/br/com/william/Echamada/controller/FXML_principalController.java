@@ -11,6 +11,7 @@ import br.com.william.Echamada.bean.LiberadosBean;
 import br.com.william.Echamada.bean.TabelaHistoricoBean;
 import br.com.william.Echamada.localizacao.ListaHistorico;
 import br.com.william.Echamada.sql.Sql;
+import br.com.william.Echamada.util.MapUtil;
 import br.com.william.Echamada.util.MetodosSql;
 import br.com.william.Echamada.util.Util;
 import br.com.william.Echamada.util.UtilLiberarAlunos;
@@ -19,18 +20,19 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableCell;
 //import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -38,8 +40,10 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.web.WebView;
 
 /**
  * FXML Controller class
@@ -48,10 +52,122 @@ import javafx.scene.paint.Color;
  */
 public class FXML_principalController implements Initializable {
     @FXML
+    private DatePicker date_dataHora;
+    @FXML
     private ProgressBar progress;    
     @FXML
-    private ListView list_alunos;
+    private ProgressIndicator progress_hora;   
+    @FXML
+    private ListView list_alunos;//date_dataHora
     ObservableList<String> alunosListados = FXCollections.observableArrayList();
+    
+    @FXML
+    private ListView list_horario;
+    ObservableList<String> listaHorario = FXCollections.observableArrayList();
+    
+    @FXML
+    private WebView webView_mapa;
+    
+     @FXML
+    private ToggleGroup Aulas;
+    //Map***********************************************************************progress_hora
+     @FXML
+    void action_list_alunos(MouseEvent event) {
+        try{
+            list_horario.setItems(listaHorario);
+            Aulas.getSelectedToggle().setSelected(false);        
+        }catch(Exception ex){
+            
+        }
+    }
+    
+     @FXML
+    void action_list_horario(MouseEvent event) {
+        int i = list_alunos.getSelectionModel().getSelectedIndex();
+        if(i != -1){
+            try{
+                String hora = list_horario.getSelectionModel().getSelectedItem().toString();
+                if(!hora.equals(" -")){
+                    String id =  ConteudoTabelaAluno.get(i).getId().getValue();                    
+                    if(date_dataHora.getValue() != null){
+                        webView_mapa.getEngine().load(MapUtil.mostrarNoMapa(id, hora,date_dataHora.getValue().toString()));
+                    }else{
+                        webView_mapa.getEngine().load(MapUtil.mostrarNoMapa(id, hora,Util.time()));
+                    }
+                }
+            }catch(Exception ex){
+                Alert dialogoInfo = new Alert(Alert.AlertType.ERROR);                
+                dialogoInfo.setHeaderText("Ocorreu um erro");
+                dialogoInfo.setContentText(ex+"");
+                dialogoInfo.showAndWait();
+            }
+        }
+    }
+    public void pegarHorario(int matutino,int vespertino,int noturno){
+        int i = list_alunos.getSelectionModel().getSelectedIndex();
+        if(i != -1){
+            try{
+                String id =  ConteudoTabelaAluno.get(i).getId().getValue();
+                String turno = ConteudoTabelaAluno.get(i).getTurno().getValue();
+                switch(turno){
+                   case "Matutino":list_horario.setItems(MapUtil.listaHorario(matutino));break;
+                   case "Vespertino":list_horario.setItems(MapUtil.listaHorario(vespertino));break;
+                   case "Noturno":list_horario.setItems(MapUtil.listaHorario(noturno));break;
+                }
+               System.out.println("index mostrar:"+i);
+               verificar(id);
+            }catch(Exception ex){
+                Alert dialogoInfo = new Alert(Alert.AlertType.ERROR);                
+                dialogoInfo.setHeaderText("Ocorreu um erro");
+                dialogoInfo.setContentText(ex+"");
+                dialogoInfo.showAndWait();
+            }
+        }
+    }
+    public void verificar(String id){        
+            new Thread(){
+                public void run(){                    
+                    try{
+                        progress_hora.setVisible(true);
+                        
+                        if(date_dataHora.getValue() != null){
+                            list_horario.setItems(MapUtil.verificarLocalização(list_horario.getItems(),id,date_dataHora.getValue().toString()));
+                        }else{
+                             list_horario.setItems(MapUtil.verificarLocalização(list_horario.getItems(),id,Util.time()));
+                        }
+                        progress_hora.setVisible(false);                    
+                    }catch(IllegalStateException ex){
+            
+                    }
+                }
+            }.start();
+       
+    }
+    @FXML
+    void toggle_aula01(ActionEvent event) {
+        pegarHorario(7,13,19);
+    }
+
+    @FXML
+    void toggle_aula02(ActionEvent event) {
+        pegarHorario(8,14,20);
+    }
+
+    @FXML
+    void toggle_aula03(ActionEvent event) {
+        pegarHorario(9,15,21);
+    }
+
+    @FXML
+    void toggle_aula04(ActionEvent event) {
+        pegarHorario(10,16,22);
+    }
+
+    @FXML
+    void toggle_aula05(ActionEvent event) {
+        pegarHorario(11,17,23);
+    }
+    //**************************************************************************
     //Tabela_Alunos*************************************************************    
     @FXML
     private TableView<AlunosBean> tabela_aluno;
@@ -352,7 +468,9 @@ public class FXML_principalController implements Initializable {
     
      @FXML
     void BT_filtrarAluno(ActionEvent event) {
+        AcompanharLocalizacao(false);
         listaTabelaAlunos();
+        AcompanharLocalizacao(true);
     }
       @FXML
     void BT_limparFiltro(ActionEvent event) {
@@ -369,6 +487,8 @@ public class FXML_principalController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        //listaHorario.addAll();
+        progress_hora.setVisible(false);
           // listaHistorico();
         list_alunos.setItems(alunosListados);
         //Inicializando a tabela alunos.
@@ -408,19 +528,19 @@ public class FXML_principalController implements Initializable {
         combo_turnoLiberados.getItems().add("Matutino");combo_turnoLiberados.getItems().add("Vespertino");combo_turnoLiberados.getItems().add("Noturno");
         combo_turnoLiberados.getItems().add("");
         
-        tabela_aluno.setRowFactory(tv -> new TableRow<AlunosBean>() {
-            public void updateItem(AlunosBean item, boolean empty) {
-                super.updateItem(item, empty) ;
-                
-                if(item == null){
-                    setStyle("");
-                }else if(item.getStatus().getValue().equals("presente")){                    
-                    setStyle("-fx-background-color:#43CD80;");                     
-                }else if(item.getStatus().getValue().equals("alsente")){
-                    setStyle("-fx-background-color:red;");                    
-                }
-            }
-        });
+//        tabela_aluno.setRowFactory(tv -> new TableRow<AlunosBean>() {
+//            public void updateItem(AlunosBean item, boolean empty) {
+//                super.updateItem(item, empty) ;
+//                System.out.println("COLORINDO");
+//                if(item == null){
+//                    setStyle("");
+//                }else if(item.getStatus().getValue().equals("presente")){                    
+//                    setStyle("-fx-background-color:#43CD80;");                     
+//                }else if(item.getStatus().getValue().equals("alsente")){
+//                    setStyle("-fx-background-color:red;");                    
+//                }
+//            }
+//        });
         
         tabela_Liberados.setRowFactory(tv -> new TableRow<LiberadosBean>() {
             public void updateItem(LiberadosBean item, boolean empty) {
@@ -518,7 +638,7 @@ public class FXML_principalController implements Initializable {
     
     public void AcompanharLocalizacao(boolean continuar){
         Timer time = new Timer();
-        final long SEGUNDOS = (5000 * 5);
+        final long SEGUNDOS = (2000 * 5);
         try{
                 if(continuar){
                     TimerTask tarefa = new TimerTask(){
@@ -544,11 +664,10 @@ public class FXML_principalController implements Initializable {
                                 ConteudoTabelaAluno.get(j).getStatus().setValue("alsente");
                                 ConteudoTabelaAluno.get(j).getHora().setValue(objeto.getHora());                                
                             }
+                            colorir();
                         }  
                     }                    
                 };
-                 
-                 
                 time.scheduleAtFixedRate(tarefa, 0, SEGUNDOS);
                      
                 
@@ -569,6 +688,21 @@ public class FXML_principalController implements Initializable {
             System.err.println("********************\nErro ao lista Tabela:\n"+ex+"\n**********************");
         }
         
+    }
+    
+    public void colorir(){
+        tabela_aluno.setRowFactory(tv -> new TableRow<AlunosBean>() {
+            public void updateItem(AlunosBean item, boolean empty) {
+                super.updateItem(item, empty) ;                
+                if(item == null){
+                    setStyle("");
+                }else if(item.getStatus().getValue().equals("presente")){                    
+                    setStyle("-fx-background-color:#43CD80;");                     
+                }else if(item.getStatus().getValue().equals("alsente")){
+                    setStyle("-fx-background-color:red;");                    
+                }
+            }
+        });
     }
 }
         

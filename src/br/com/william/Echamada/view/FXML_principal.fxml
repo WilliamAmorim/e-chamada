@@ -12,6 +12,7 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
@@ -22,6 +23,8 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -140,7 +143,7 @@
             </Label>
         </items>
       </ToolBar>
-    <SplitPane dividerPositions="0.21471927162367224" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+    <SplitPane dividerPositions="0.5" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
          <items>
             <VBox maxWidth="280.0" prefHeight="679.0" prefWidth="539.0">
                <children>
@@ -410,10 +413,35 @@
                   </Tab>
                   <Tab text="Mapa">
                      <content>
-                        <SplitPane dividerPositions="0.19186046511627908" prefHeight="160.0" prefWidth="200.0">
+                        <SplitPane dividerPositions="0.19864341085271317" prefHeight="160.0" prefWidth="200.0">
                            <items>
-                              <ListView fx:id="list_alunos" prefHeight="200.0" prefWidth="200.0" />
-                              <WebView prefHeight="649.0" prefWidth="667.0" />
+                              <ListView fx:id="list_alunos" onMousePressed="#action_list_alunos" prefHeight="649.0" prefWidth="274.0" />
+                              <SplitPane dividerPositions="0.8921417565485362" minWidth="150.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
+                                 <items>
+                                    <WebView fx:id="webView_mapa" prefHeight="200.0" prefWidth="200.0" />
+                                    <VBox>
+                                       <children>
+                                          <ListView fx:id="list_horario" maxHeight="1.7976931348623157E308" minHeight="30.0" onMouseClicked="#action_list_horario" orientation="HORIZONTAL" />
+                                          <ToolBar prefHeight="40.0" prefWidth="200.0">
+                                            <items>
+                                                <DatePicker fx:id="date_dataHora" prefHeight="25.0" prefWidth="102.0" />
+                                                <Separator orientation="VERTICAL" prefHeight="25.0" prefWidth="15.0" />
+                                                <ToggleButton mnemonicParsing="false" onAction="#toggle_aula01" text="Aula 01">
+                                                   <toggleGroup>
+                                                      <ToggleGroup fx:id="Aulas" />
+                                                   </toggleGroup>
+                                                </ToggleButton>
+                                                <ToggleButton layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#toggle_aula02" text="Aula 02" toggleGroup="$Aulas" />
+                                                <ToggleButton layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#toggle_aula03" text="Aula 03" toggleGroup="$Aulas" />
+                                                <ToggleButton layoutX="70.0" layoutY="10.0" mnemonicParsing="false" onAction="#toggle_aula04" text="Aula 04" toggleGroup="$Aulas" />
+                                                <ToggleButton layoutX="190.0" layoutY="10.0" mnemonicParsing="false" onAction="#toggle_aula05" text="Aula 05" toggleGroup="$Aulas" />
+                                                <ProgressIndicator fx:id="progress_hora" prefHeight="0.0" prefWidth="18.0" />
+                                            </items>
+                                          </ToolBar>
+                                       </children>
+                                    </VBox>
+                                 </items>
+                              </SplitPane>
                            </items>
                         </SplitPane>
                      </content>
