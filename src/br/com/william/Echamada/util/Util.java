@@ -40,11 +40,11 @@ public class Util {
             //updateLiberacao(date02);//Date1 é posterior a Date2
         } else if (date1.compareTo(date2) < 0) {     
             //System.out.println("Data1 é anterior a Data2");
-           values.add(dateLiberacao);
+           values.add(converterData(dateLiberacao,"sql"));
            update.executeQuery("UPDATE `liberados` SET `status`='0' WHERE prazo = ?", values);
         } else if (date2.compareTo(date1) == 0) {    
             //System.out.println("Date1 is equal to Date2");
-           values.add(dateLiberacao);
+           values.add(converterData(dateLiberacao,"sql"));
            update.executeQuery("UPDATE `liberados` SET `status`='0' WHERE prazo = ?", values);
         } else {
            // System.out.println("How to get here?");

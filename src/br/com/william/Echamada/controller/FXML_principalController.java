@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -90,7 +91,8 @@ public class FXML_principalController implements Initializable {
                 if(!hora.equals(" -")){
                     String id =  ConteudoTabelaAluno.get(i).getId().getValue();                    
                     if(date_dataHora.getValue() != null){
-                        webView_mapa.getEngine().load(MapUtil.mostrarNoMapa(id, hora,date_dataHora.getValue().toString()));
+                        System.out.println("Data:"+date_dataHora.getValue().toString());
+                        webView_mapa.getEngine().load(MapUtil.mostrarNoMapa(id, hora,Util.converterData(date_dataHora.getValue().toString(),"normal")));
                     }else{
                         webView_mapa.getEngine().load(MapUtil.mostrarNoMapa(id, hora,Util.time()));
                     }
@@ -115,7 +117,9 @@ public class FXML_principalController implements Initializable {
                    case "Noturno":list_horario.setItems(MapUtil.listaHorario(noturno));break;
                 }
                System.out.println("index mostrar:"+i);
+               progress_hora.setVisible(true);                     
                verificar(id);
+               progress_hora.setVisible(false);        
             }catch(Exception ex){
                 Alert dialogoInfo = new Alert(Alert.AlertType.ERROR);                
                 dialogoInfo.setHeaderText("Ocorreu um erro");
@@ -128,16 +132,18 @@ public class FXML_principalController implements Initializable {
             new Thread(){
                 public void run(){                    
                     try{
-                        progress_hora.setVisible(true);
                         
                         if(date_dataHora.getValue() != null){
-                            list_horario.setItems(MapUtil.verificarLocalização(list_horario.getItems(),id,date_dataHora.getValue().toString()));
+                            Platform.runLater(()->list_horario.setItems(MapUtil.verificarLocalização(list_horario.getItems(),id,Util.converterData(date_dataHora.getValue().toString(),"normal"))));
                         }else{
-                             list_horario.setItems(MapUtil.verificarLocalização(list_horario.getItems(),id,Util.time()));
-                        }
-                        progress_hora.setVisible(false);                    
+                            Platform.runLater(()->list_horario.setItems(MapUtil.verificarLocalização(list_horario.getItems(),id,Util.time())));
+                        }                                    
                     }catch(IllegalStateException ex){
-            
+                        Alert dialogoInfo = new Alert(Alert.AlertType.ERROR);                
+                        dialogoInfo.setHeaderText("Ocorreu um erro");
+                        dialogoInfo.setContentText(ex+"");
+                        dialogoInfo.showAndWait();
+                        progress_hora.setVisible(false); 
                     }
                 }
             }.start();
@@ -408,7 +414,7 @@ public class FXML_principalController implements Initializable {
             String b = a.replace("[", "").replace("]", "");
             String[] tokens = b.split(",");     
             System.out.println("Status liberados:"+tokens[0]);
-            ConteudoTabelaLiberados.add(new LiberadosBean(tokens[0].trim(),tokens[1].trim(),tokens[2].trim(),tokens[3].trim(),tokens[4].trim()));
+            ConteudoTabelaLiberados.add(new LiberadosBean(tokens[0].trim(),tokens[1].trim(),Util.converterData(tokens[2].trim(),"normal"),tokens[3].trim(),tokens[4].trim()));
             Util.verificarData(tokens[2], Util.time());
         }
     }
@@ -542,20 +548,20 @@ public class FXML_principalController implements Initializable {
 //            }
 //        });
         
-        tabela_Liberados.setRowFactory(tv -> new TableRow<LiberadosBean>() {
-            public void updateItem(LiberadosBean item, boolean empty) {
-                super.updateItem(item, empty) ;
-                if(item == null){
-                    setStyle("");
-                }else if(item.getStatus().getValue().equals("1")){                    
-                    setStyle("-fx-background-color:#43CD80;");
-                }else if(item.getStatus().getValue().equals("0")){
-                    setStyle("-fx-background-color:red;");
-                }else{
-                    setStyle("");
-                }
-            }
-        });
+//        tabela_Liberados.setRowFactory(tv -> new TableRow<LiberadosBean>() {
+//            public void updateItem(LiberadosBean item, boolean empty) {
+//                super.updateItem(item, empty) ;
+//                if(item == null){
+//                    setStyle("");
+//                }else if(item.getStatus().getValue().equals("1")){                    
+//                    setStyle("-fx-background-color:#43CD80;");
+//                }else if(item.getStatus().getValue().equals("0")){
+//                    setStyle("-fx-background-color:red;");
+//                }else{
+//                    setStyle("");
+//                }
+//            }
+//        });
         
         for (int h = 1; h <= 5; h++) {
             
@@ -700,6 +706,21 @@ public class FXML_principalController implements Initializable {
                     setStyle("-fx-background-color:#43CD80;");                     
                 }else if(item.getStatus().getValue().equals("alsente")){
                     setStyle("-fx-background-color:red;");                    
+                }
+            }
+        });
+        
+        tabela_Liberados.setRowFactory(tv -> new TableRow<LiberadosBean>() {
+            public void updateItem(LiberadosBean item, boolean empty) {
+                super.updateItem(item, empty) ;
+                if(item == null){
+                    setStyle("");
+                }else if(item.getStatus().getValue().equals("1")){                    
+                    setStyle("-fx-background-color:#43CD80;");
+                }else if(item.getStatus().getValue().equals("0")){
+                    setStyle("-fx-background-color:red;");
+                }else{
+                    setStyle("");
                 }
             }
         });
