@@ -26,16 +26,18 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.PieChart.Data;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableCell;
-//import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -53,9 +55,22 @@ import javafx.scene.web.WebView;
  */
 public class FXML_principalController implements Initializable {
     @FXML
-    private DatePicker date_dataHora;
+    private Label label_statusProgress;
+     @FXML
+    private ProgressIndicator progress_status;
     @FXML
-    private ProgressBar progress;    
+    private DatePicker date_dataHora;//label_statusProgress
+    @FXML
+    private ProgressBar progress; 
+    
+    public void progress(String msg){
+        new Thread(){
+            public void run(){  
+                //progress_status.setVisible(fluxo);
+                label_statusProgress.setText(msg);
+            }
+         }.start();
+    }
     @FXML
     private ProgressIndicator progress_hora;   
     @FXML
@@ -116,10 +131,8 @@ public class FXML_principalController implements Initializable {
                    case "Vespertino":list_horario.setItems(MapUtil.listaHorario(vespertino));break;
                    case "Noturno":list_horario.setItems(MapUtil.listaHorario(noturno));break;
                 }
-               System.out.println("index mostrar:"+i);
-               progress_hora.setVisible(true);                     
-               verificar(id);
-               progress_hora.setVisible(false);        
+               System.out.println("index mostrar:"+i);                                   
+               verificar(id);               
             }catch(Exception ex){
                 Alert dialogoInfo = new Alert(Alert.AlertType.ERROR);                
                 dialogoInfo.setHeaderText("Ocorreu um erro");
@@ -132,12 +145,13 @@ public class FXML_principalController implements Initializable {
             new Thread(){
                 public void run(){                    
                     try{
-                        
+                        progress_hora.setVisible(true); 
                         if(date_dataHora.getValue() != null){
-                            Platform.runLater(()->list_horario.setItems(MapUtil.verificarLocalização(list_horario.getItems(),id,Util.converterData(date_dataHora.getValue().toString(),"normal"))));
+                            list_horario.setItems(MapUtil.verificarLocalização(list_horario.getItems(),id,Util.converterData(date_dataHora.getValue().toString(),"normal")));//Platform.runLater(()->
                         }else{
-                            Platform.runLater(()->list_horario.setItems(MapUtil.verificarLocalização(list_horario.getItems(),id,Util.time())));
-                        }                                    
+                            list_horario.setItems(MapUtil.verificarLocalização(list_horario.getItems(),id,Util.time()));//Platform.runLater(()->
+                        }   
+                        progress_hora.setVisible(false); 
                     }catch(IllegalStateException ex){
                         Alert dialogoInfo = new Alert(Alert.AlertType.ERROR);                
                         dialogoInfo.setHeaderText("Ocorreu um erro");
@@ -174,6 +188,7 @@ public class FXML_principalController implements Initializable {
         pegarHorario(11,17,23);
     }
     //**************************************************************************
+    
     //Tabela_Alunos*************************************************************    
     @FXML
     private TableView<AlunosBean> tabela_aluno;
@@ -214,7 +229,8 @@ public class FXML_principalController implements Initializable {
     private ObservableList<AlunosBean> ConteudoTabelaAluno = FXCollections.observableArrayList();
     
     //**************************************************************************
-    
+      @FXML
+    private ComboBox combo_numeroLinhas;
     //Tabela Historico**********************************************************
     @FXML
     private TableView<TabelaHistoricoBean> tabela_historico;
@@ -244,7 +260,31 @@ public class FXML_principalController implements Initializable {
     private ObservableList<TabelaHistoricoBean> ConteudoTabelaHistorico = FXCollections.observableArrayList();
      
     //**************************************************************************
-    
+    //Pesquisar Aluno***********************************************************
+    @FXML
+    private TextField txt_pesquisar;
+
+    @FXML
+    void BT_pesquisar(ActionEvent event) {
+        
+                if(!"".equals(txt_pesquisar.getText())){
+                    listaTabelaAlunos(txt_pesquisar.getText());
+                }else{
+                    listaTabelaAlunos("");            
+                }
+               
+        
+    }
+    //**************************************************************************
+    @FXML
+    void BT_atualizar(ActionEvent event) {
+        progress("Atualizando..."); 
+        listaTabelaAlunos("null");
+        listaTabelaLiberados();
+        progress(".");
+        //progress.setVisible(true);
+      
+    }
     //Cadastrar e Editar aluno**************************************************
     @FXML
     private Button BT_cadastrarAluno;
@@ -286,14 +326,14 @@ public class FXML_principalController implements Initializable {
     
     @FXML
     void BT_cadastrarAluno(ActionEvent event) {           
-                try{
-                    atualizarTabelas();
-                    progress.setProgress(50);
-                    cadastrarAluno();
-                    progress.setProgress(0);       
-                }catch(Exception ex){
-                    progress.setProgress(0);       
-                }
+        try{
+            atualizarTabelas();
+            progress.setProgress(50);
+            cadastrarAluno();
+            progress.setProgress(0);       
+        }catch(Exception ex){
+            progress.setProgress(0);       
+        }
     }
     String operacao;
     public void cadastrarAluno(){
@@ -308,11 +348,40 @@ public class FXML_principalController implements Initializable {
                 }
                 execute.CadastrarAluno(operacao,"456987", txt_nomeAluno.getText(),txt_senhaAluno.getText(),date_dataNascimentoAluno.getValue(), combo_sexoAluno.getValue()+"", txt_enderecoAluno.getText(), nome_pai.getText(), txt_nomeMae.getText(), txt_telefone.getText(), combo_serie.getValue()+"", combo_turma.getValue()+"", combo_turno.getValue()+"",Id);                //ConteudoTabelaAluno.get(i).getId().getValue()
                 System.err.println("Cadastrado");
-                listaTabelaAlunos(); 
+                listaTabelaAlunos("null"); 
                 //BT_cadastrarAluno.setText("Cadastrar");
            // }
         //}.start();
     }
+    
+    //**************************************************************************
+    @FXML
+    private PieChart grafico_status;
+    private ObservableList<Data> data2d = FXCollections.observableArrayList();
+    private ObservableList<Data> getChartData() {        
+        data2d.addAll(new PieChart.Data("Liberados", 23),
+                      new PieChart.Data("Presente", 47), 
+                      new PieChart.Data("Faltas", 30));          
+        return data2d;
+    }
+     private void createScene(){
+    Platform.runLater(() -> {  
+        grafico_status.setLegendVisible(false);//Posicion de leyenda 
+        grafico_status.setData(getChartData());            
+        int i = 1;
+        String color = null;
+        for (PieChart.Data data : data2d) {             
+            switch(i){
+                case 1:color = "#1C86EE";break;
+                case 2:color = "#43CD80";break;
+                case 3:color = "#FF4040";break;
+            }
+            data.getNode().setStyle( "-fx-pie-color: "+color+";");                          
+            i++;
+        }
+        });    
+     }
+    //**************************************************************************
     @FXML
     void clicked_tabelaAluno(MouseEvent event) {
         BT_cadastrarAluno.setText("Alterar");
@@ -363,7 +432,11 @@ public class FXML_principalController implements Initializable {
         combo_turma.setValue(null);
         combo_turno.setValue(null);
     }  
-    public void listaTabelaAlunos(){
+    public void listaTabelaAlunos(String aluno){
+        String linhas = (String)combo_numeroLinhas.getValue();
+        if(combo_numeroLinhas.getValue() == null){
+            linhas = "25";
+        }
         alunosListados.clear();
         ConteudoTabelaHistorico.clear();
         ConteudoTabelaAluno.clear();
@@ -372,7 +445,7 @@ public class FXML_principalController implements Initializable {
         ArrayList valores = new ArrayList();
         ArrayList resultadoQuery = new ArrayList();
         String[] resultado = {"id_aluno","nome_aluno", "data_nascimento", "sexo", "endereco", "nome_pai","nome_mae","telefone_responsavel","serie","turma","turno","status"};       
-        resultadoQuery = novo.executeQuery(m.criarQueryAluno((String)combo_serieFiltro.getValue(), (String)combo_turmaFiltro.getValue(), (String)combo_turnoFiltro.getValue(), (String)combo_statusFiltro.getValue(), (String)combo_generoFiltro.getValue()), valores, resultado);
+        resultadoQuery = novo.executeQuery(m.criarQueryAluno((String)combo_serieFiltro.getValue(), (String)combo_turmaFiltro.getValue(), (String)combo_turnoFiltro.getValue(), (String)combo_statusFiltro.getValue(), (String)combo_generoFiltro.getValue(),aluno,linhas), valores, resultado);
         for (int i = 0; i <= resultadoQuery.size() - 1; i++) {
             String a = resultadoQuery.get(i).toString();
             String b = a.replace("[", "").replace("]", "");
@@ -401,7 +474,7 @@ public class FXML_principalController implements Initializable {
     private TableColumn<LiberadosBean, String> coluna_mensagem;
     
     private final ObservableList<LiberadosBean> ConteudoTabelaLiberados = FXCollections.observableArrayList();
-    
+    ArrayList liberados = new ArrayList();
     public void listaTabelaLiberados(){
         ConteudoTabelaLiberados.clear();
         Sql novo = new Sql();
@@ -415,7 +488,9 @@ public class FXML_principalController implements Initializable {
             String[] tokens = b.split(",");     
             System.out.println("Status liberados:"+tokens[0]);
             ConteudoTabelaLiberados.add(new LiberadosBean(tokens[0].trim(),tokens[1].trim(),Util.converterData(tokens[2].trim(),"normal"),tokens[3].trim(),tokens[4].trim()));
-            Util.verificarData(tokens[2], Util.time());
+            if(Util.verificarData(tokens[2].trim(), Util.time())){
+                liberados.add(tokens[1].trim());
+            }
         }
     }
     //**************************************************************************
@@ -475,7 +550,7 @@ public class FXML_principalController implements Initializable {
      @FXML
     void BT_filtrarAluno(ActionEvent event) {
         AcompanharLocalizacao(false);
-        listaTabelaAlunos();
+        listaTabelaAlunos("null");
         AcompanharLocalizacao(true);
     }
       @FXML
@@ -485,7 +560,7 @@ public class FXML_principalController implements Initializable {
         combo_turnoFiltro.setValue(null);
         combo_statusFiltro.setValue(null);
         combo_generoFiltro.setValue(null);
-        listaTabelaAlunos();
+        listaTabelaAlunos("null");
     }
    
     /**
@@ -493,8 +568,11 @@ public class FXML_principalController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        createScene();
         //listaHorario.addAll();
+        progress.setVisible(true);  
         progress_hora.setVisible(false);
+        progress_status.setVisible(false);
           // listaHistorico();
         list_alunos.setItems(alunosListados);
         //Inicializando a tabela alunos.
@@ -533,6 +611,14 @@ public class FXML_principalController implements Initializable {
         combo_turmaLiberados.getItems().add("");
         combo_turnoLiberados.getItems().add("Matutino");combo_turnoLiberados.getItems().add("Vespertino");combo_turnoLiberados.getItems().add("Noturno");
         combo_turnoLiberados.getItems().add("");
+        
+        combo_numeroLinhas.getItems().add("25");
+        combo_numeroLinhas.getItems().add("50");
+        combo_numeroLinhas.getItems().add("100");
+        combo_numeroLinhas.getItems().add("250");
+        combo_numeroLinhas.getItems().add("500");
+        combo_numeroLinhas.getItems().add("Todas");
+                        
         
 //        tabela_aluno.setRowFactory(tv -> new TableRow<AlunosBean>() {
 //            public void updateItem(AlunosBean item, boolean empty) {
@@ -604,7 +690,7 @@ public class FXML_principalController implements Initializable {
         tabela_aluno.setItems(ConteudoTabelaAluno);  
         tabela_historico.setItems(ConteudoTabelaHistorico);  
         
-        listaTabelaAlunos();
+        listaTabelaAlunos("null");
         
         coluna_parametro.setCellValueFactory(cellData -> cellData.getValue().getParametro());
         coluna_prazo.setCellValueFactory(cellData -> cellData.getValue().getPrazo());
@@ -688,7 +774,7 @@ public class FXML_principalController implements Initializable {
     public void atualizarTabelas(){
         //atualizando todas as tabelas
         try{
-            listaTabelaAlunos();
+            listaTabelaAlunos("null");
             listaTabelaLiberados();    
         }catch(Exception ex){
             System.err.println("********************\nErro ao lista Tabela:\n"+ex+"\n**********************");
@@ -699,9 +785,11 @@ public class FXML_principalController implements Initializable {
     public void colorir(){
         tabela_aluno.setRowFactory(tv -> new TableRow<AlunosBean>() {
             public void updateItem(AlunosBean item, boolean empty) {
-                super.updateItem(item, empty) ;                
+                super.updateItem(item, empty) ;                                
                 if(item == null){
                     setStyle("");
+                }else if(Util.comparar(liberados,item.getAluno().getValue(),item.getSerie().getValue(),item.getTurma().getValue(),item.getTurno().getValue())){    
+                    setStyle("-fx-background-color:blue;");   
                 }else if(item.getStatus().getValue().equals("presente")){                    
                     setStyle("-fx-background-color:#43CD80;");                     
                 }else if(item.getStatus().getValue().equals("alsente")){
@@ -714,7 +802,7 @@ public class FXML_principalController implements Initializable {
             public void updateItem(LiberadosBean item, boolean empty) {
                 super.updateItem(item, empty) ;
                 if(item == null){
-                    setStyle("");
+                    setStyle("");                   
                 }else if(item.getStatus().getValue().equals("1")){                    
                     setStyle("-fx-background-color:#43CD80;");
                 }else if(item.getStatus().getValue().equals("0")){
@@ -725,6 +813,7 @@ public class FXML_principalController implements Initializable {
             }
         });
     }
+    
 }
         
         

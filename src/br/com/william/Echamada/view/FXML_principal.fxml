@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
@@ -79,18 +80,13 @@
     </MenuBar>
       <ToolBar prefHeight="40.0" prefWidth="200.0">
         <items>
-          <Button mnemonicParsing="false" text="Button" />
+          <Button mnemonicParsing="false" onAction="#BT_atualizar" text="Atualizar" />
             <Separator layoutX="334.0" layoutY="10.0" prefHeight="30.0" prefWidth="21.0" />
-            <Button mnemonicParsing="false" text="Pesquisar" />
-            <TextField prefHeight="25.0" prefWidth="193.0" />
+            <Button mnemonicParsing="false" onAction="#BT_pesquisar" text="Pesquisar" />
+            <TextField fx:id="txt_pesquisar" prefHeight="25.0" prefWidth="193.0" />
             <Separator prefHeight="30.0" prefWidth="21.0" />
             <Label text="Numero de linhas:" />
-            <ComboBox prefHeight="25.0" prefWidth="82.0" promptText="50" />
-            <CheckBox mnemonicParsing="false" text="Todas">
-               <padding>
-                  <Insets left="8.0" />
-               </padding>
-            </CheckBox>
+            <ComboBox fx:id="combo_numeroLinhas" prefHeight="25.0" prefWidth="82.0" promptText="25" />
             <Separator layoutX="359.0" layoutY="10.0" prefHeight="30.0" prefWidth="21.0" />
             <Label text="Alunos: 50">
                <font>
@@ -342,6 +338,7 @@
                         </TitledPane>
                     </panes>
                   </Accordion>
+                  <PieChart fx:id="grafico_status" prefHeight="216.0" prefWidth="280.0" title="Status" />
                </children>
             </VBox>
             <TabPane onMouseClicked="#tabPane_clicked" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" tabMinWidth="60.0">
@@ -452,9 +449,8 @@
     </SplitPane>
     <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="NEVER">
       <children>
-            <ProgressBar fx:id="progress" prefWidth="250.0" progress="0.0" />
-        <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />
-            <Label layoutX="1052.0" layoutY="13.0" maxHeight="1.7976931348623157E308" maxWidth="-1.0" text="Alunos: 30">
+            <ProgressIndicator fx:id="progress_status" prefHeight="0.0" prefWidth="18.0" />
+            <Label fx:id="label_statusProgress" layoutX="1052.0" layoutY="13.0" maxHeight="1.7976931348623157E308" maxWidth="-1.0" text="Alunos: 30">
                <font>
                   <Font size="11.0" fx:id="x34" />
                </font>
@@ -462,6 +458,8 @@
                   <Color blue="0.625" green="0.625" red="0.625" fx:id="x44" />
                </textFill>
             </Label>
+        <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />
+            <ProgressBar fx:id="progress" prefWidth="250.0" visible="false" />
       </children>
       <padding>
         <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />

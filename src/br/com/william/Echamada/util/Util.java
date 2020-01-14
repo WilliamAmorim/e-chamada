@@ -28,7 +28,7 @@ public class Util {
      * @param dateLiberacao 
      * @param dateHoje
      */
-    public static void verificarData(String dateLiberacao,String dateHoje){  
+    public static boolean verificarData(String dateLiberacao,String dateHoje){  
         Sql update = new Sql();
         ArrayList values = new ArrayList();
         
@@ -40,15 +40,19 @@ public class Util {
             //updateLiberacao(date02);//Date1 é posterior a Date2
         } else if (date1.compareTo(date2) < 0) {     
             //System.out.println("Data1 é anterior a Data2");
-           values.add(converterData(dateLiberacao,"sql"));
+            
+           values.add(dateLiberacao);
            update.executeQuery("UPDATE `liberados` SET `status`='0' WHERE prazo = ?", values);
+           return false;
         } else if (date2.compareTo(date1) == 0) {    
             //System.out.println("Date1 is equal to Date2");
-           values.add(converterData(dateLiberacao,"sql"));
+           values.add(dateLiberacao);//converterData(dateLiberacao,"sql")
            update.executeQuery("UPDATE `liberados` SET `status`='0' WHERE prazo = ?", values);
+           return false;
         } else {
            // System.out.println("How to get here?");
         }
+        return true;
     }
     
     
@@ -72,5 +76,23 @@ public class Util {
         return dividir2[2]+"-"+dividir2[1]+"-"+dividir2[0];
        }        
        return null;
+    }
+    
+    public static boolean comparar(ArrayList liberados,String nomeAluno,String serie,String turma,String turno){
+        for (int j = 0; j < liberados.size(); j++) {
+            if(liberados.get(j).equals(nomeAluno)){
+                return true;
+            }else if(liberados.get(j).equals(serie)){
+                return true;                
+            }else if(liberados.get(j).equals(serie+turma)){
+                return true;
+            }else if(liberados.get(j).equals(turno)){
+                return true;
+            }else if(liberados.get(j).equals("todos")){
+                return true;
+            }
+            
+        }
+        return false;
     }
 }
