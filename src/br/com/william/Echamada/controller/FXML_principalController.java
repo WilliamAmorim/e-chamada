@@ -365,6 +365,15 @@ public class FXML_principalController implements Initializable {
         //return data2d;
         return null;
     }
+    /**
+     * Joga as informacoes dos aluno liberados, presente, e faltas listados no sistema
+     * @param liberados porcentagem de alunos liberados listados na tabela
+     * @param p1 total de alunos liberados
+     * @param presente porcentagem de alunos presentes
+     * @param p2 total de alunos presentes
+     * @param faltas porcentagem de aluno alsentes
+     * @param p3  total de alunos alsentes
+     */
      private void criarGrafico(int liberados,int p1,int presente,int p2,int faltas,int p3){
         data2d.get(0).setName("Liberados "+p1);
         data2d.get(1).setName("Presente "+p2);
