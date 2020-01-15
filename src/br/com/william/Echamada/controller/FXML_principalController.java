@@ -354,31 +354,41 @@ public class FXML_principalController implements Initializable {
         //}.start();
     }
     
-    //**************************************************************************
+    //Criando grafico status****************************************************
     @FXML
     private PieChart grafico_status;
     private ObservableList<Data> data2d = FXCollections.observableArrayList();
-    private ObservableList<Data> getChartData() {        
-        data2d.addAll(new PieChart.Data("Liberados", 23),
-                      new PieChart.Data("Presente", 47), 
-                      new PieChart.Data("Faltas", 30));          
-        return data2d;
+    private ObservableList<Data> getChartData() {                          
+        data2d.add(new PieChart.Data("Liberados",0));
+        data2d.add(new PieChart.Data("Presente",0));
+        data2d.add(new PieChart.Data("Alsente",0));
+        //return data2d;
+        return null;
     }
-     private void createScene(){
-    Platform.runLater(() -> {  
-        grafico_status.setLegendVisible(false);//Posicion de leyenda 
-        grafico_status.setData(getChartData());            
-        int i = 1;
-        String color = null;
-        for (PieChart.Data data : data2d) {             
-            switch(i){
-                case 1:color = "#1C86EE";break;
-                case 2:color = "#43CD80";break;
-                case 3:color = "#FF4040";break;
+     private void criarGrafico(int liberados,int p1,int presente,int p2,int faltas,int p3){
+        data2d.get(0).setName("Liberados "+p1);
+        data2d.get(1).setName("Presente "+p2);
+        data2d.get(2).setName("Alsente "+p3);
+        
+        data2d.get(0).setPieValue(liberados);
+        data2d.get(1).setPieValue(presente);
+        data2d.get(2).setPieValue(faltas);
+        Platform.runLater(() -> {  
+           // grafico_status.setData(getChartData(0,0,0));            
+            grafico_status.setTitle("Alunos "+(p1+p2+p3));            
+            grafico_status.setLegendVisible(false);//Posicion de leyenda 
+            grafico_status.setData(data2d);            
+            int i = 1;
+            String color = null;
+            for (PieChart.Data data : data2d) {             
+                switch(i){
+                    case 1:color = "#1C86EE";break;
+                    case 2:color = "#43CD80";break;
+                    case 3:color = "#FF4040";break;
+                }
+                data.getNode().setStyle( "-fx-pie-color: "+color+";");                          
+                i++;
             }
-            data.getNode().setStyle( "-fx-pie-color: "+color+";");                          
-            i++;
-        }
         });    
      }
     //**************************************************************************
@@ -568,7 +578,7 @@ public class FXML_principalController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        createScene();
+        getChartData();
         //listaHorario.addAll();
         progress.setVisible(true);  
         progress_hora.setVisible(false);
@@ -781,7 +791,7 @@ public class FXML_principalController implements Initializable {
         }
         
     }
-    
+    int pre = 0,li = 0,fa = 0;
     public void colorir(){
         tabela_aluno.setRowFactory(tv -> new TableRow<AlunosBean>() {
             public void updateItem(AlunosBean item, boolean empty) {
@@ -789,12 +799,26 @@ public class FXML_principalController implements Initializable {
                 if(item == null){
                     setStyle("");
                 }else if(Util.comparar(liberados,item.getAluno().getValue(),item.getSerie().getValue(),item.getTurma().getValue(),item.getTurno().getValue())){    
-                    setStyle("-fx-background-color:blue;");   
+                    setStyle("-fx-background-color:#1E90FF;");   
+                    li++;
                 }else if(item.getStatus().getValue().equals("presente")){                    
                     setStyle("-fx-background-color:#43CD80;");                     
+                    pre++;
                 }else if(item.getStatus().getValue().equals("alsente")){
-                    setStyle("-fx-background-color:red;");                    
+                    setStyle("-fx-background-color:#FF4040;");                    
+                    fa++;
                 }
+                if((li+pre+fa) == ConteudoTabelaAluno.size()){
+                    int p1,p2,p3;
+                    p1 = (li*100)/ConteudoTabelaAluno.size();
+                    p2 = (pre*100)/ConteudoTabelaAluno.size();
+                    p3 = (fa*100)/ConteudoTabelaAluno.size();                    
+                    criarGrafico(p1,li,p2,pre,p3,fa);
+                    li = 0;
+                    pre = 0;
+                    fa = 0;
+                }
+                
             }
         });
         
