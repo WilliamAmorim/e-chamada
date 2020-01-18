@@ -26,8 +26,12 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Side;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.PieChart.Data;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -43,6 +47,7 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -54,6 +59,100 @@ import javafx.scene.web.WebView;
  * @author willi
  */
 public class FXML_principalController implements Initializable {
+    //Estatisticas**********************************************************
+    final NumberAxis xAxis = new NumberAxis();
+    final NumberAxis yAxis = new NumberAxis();
+    @FXML
+    private ToggleButton toggle_statisticaPresentes;
+
+    @FXML
+    private ToggleGroup estatistica;
+
+    @FXML
+    private ToggleButton toggle_EstatisticaAlsente;
+
+ 
+    @FXML
+    private ComboBox combo_estatisticaSerie;
+
+    @FXML
+    private ComboBox combo_estatisticaTurma;
+
+    @FXML
+    private ComboBox combo_estatisticaTurno;
+
+   
+
+    @FXML
+    private DatePicker date_estatisticaFim;
+    @FXML
+    LineChart<String,Number> grafico_estatistica;
+    int adicionados = 0;
+    @FXML
+    void BT_adicionarEstatistica(ActionEvent event) {
+        //if(combo_estatisticaSerie.getValue() != null  combo_estatisticaTurma.getValue() != null  && combo_estatisticaTurno.getValue() != null){//
+        if(combo_estatisticaTurma.getValue() != null  && combo_estatisticaSerie.getValue() != null){
+            adicionados++;
+            XYChart.Series<String, Number> serie = new XYChart.Series<String, Number>();
+            serie.setName((String)combo_estatisticaSerie.getValue()+(String)combo_estatisticaTurma.getValue());
+            grafico_estatistica.getData().add(serie);
+        }else if(combo_estatisticaSerie.getValue() != null){
+            adicionados++;
+            XYChart.Series<String, Number> serie = new XYChart.Series<String, Number>();
+            serie.setName((String)combo_estatisticaSerie.getValue());
+            grafico_estatistica.getData().add(serie);
+        }else if(combo_estatisticaTurno.getValue() != null){
+            adicionados++;
+            XYChart.Series<String, Number> serie = new XYChart.Series<String, Number>();
+            serie.setName((String)combo_estatisticaTurno.getValue());
+            serie.getData().add(new XYChart.Data<String, Number>("10/05/202"+adicionados, 200));
+            grafico_estatistica.getData().add(serie);
+            
+        }                
+    }
+    @FXML
+    void toggle_estatisticaAlsente(ActionEvent event) {
+        System.out.println("Serie:"+grafico_estatistica.getData().get(0).getName());
+    }
+
+    @FXML
+    void toggle_estatisticaLiberados(ActionEvent event) {
+
+    }
+
+    @FXML
+    void toggle_statisticaPresentes(ActionEvent event) {
+
+    }
+    
+    public void setStatisticas(){
+        XYChart.Series<String, Number> serie1 = new XYChart.Series<String, Number>();
+        XYChart.Series<String, Number> serie2 = new XYChart.Series<String, Number>();
+        XYChart.Series<String, Number> serie3 = new XYChart.Series<String, Number>();
+        XYChart.Series<String, Number> serie4 = new XYChart.Series<String, Number>();
+        serie4.getData().add(new XYChart.Data<String, Number>("jan", 200));
+        serie4.getData().add(new XYChart.Data<String, Number>("Feb", 500));
+        serie3.getData().add(new XYChart.Data<String, Number>("Mar", 300));
+        serie3.getData().add(new XYChart.Data<String, Number>("Apr", 600));
+        serie1.setName("Month Pay");
+        serie2.setName("3C");
+        serie3.setName("3 A");
+        serie4.setName("Matutino");        
+        grafico_estatistica.getData().add(serie1);
+        grafico_estatistica.getData().add(serie2);
+        grafico_estatistica.getData().add(serie3);
+        grafico_estatistica.getData().add(serie4);
+
+        
+        
+    }
+    
+   
+
+
+
+  
+    //**********************************************************************
     @FXML
     private Label label_statusProgress;
      @FXML
@@ -67,7 +166,7 @@ public class FXML_principalController implements Initializable {
         new Thread(){
             public void run(){  
                 //progress_status.setVisible(fluxo);
-                label_statusProgress.setText(msg);
+               // label_statusProgress.setText(msg);
             }
          }.start();
     }
@@ -336,6 +435,9 @@ public class FXML_principalController implements Initializable {
         }
     }
     String operacao;
+    /**
+     * Cadastra um novo aluno e altera um aluno
+     */
     public void cadastrarAluno(){
        // new Thread(){        
          //   public void run(){
@@ -358,10 +460,15 @@ public class FXML_principalController implements Initializable {
     @FXML
     private PieChart grafico_status;
     private ObservableList<Data> data2d = FXCollections.observableArrayList();
+    /**
+     * Adiciona ao  grafico o ObservableList na inicialização do sistema
+     * @return 
+     */
     private ObservableList<Data> getChartData() {                          
         data2d.add(new PieChart.Data("Liberados",0));
         data2d.add(new PieChart.Data("Presente",0));
         data2d.add(new PieChart.Data("Alsente",0));
+                
         //return data2d;
         return null;
     }
@@ -415,6 +522,9 @@ public class FXML_principalController implements Initializable {
         System.out.println("Selected:"+tabela_aluno.getSelectionModel().getSelectedIndex());
     }
     public int i;
+    /**
+     * Pega as informações do aluno selecionado e joga no formulario de cadastro
+     */
     public void pegarDadosTabelaAlunos(){
         switch(tabela_aluno.getSelectionModel().getSelectedIndex()){
                     case -1:operacao = "cadastrar";System.out.println("Cadastrando");break;
@@ -434,11 +544,14 @@ public class FXML_principalController implements Initializable {
         combo_turno.setValue(ConteudoTabelaAluno.get(i).getTurno().getValue());
         System.out.println("index: "+i);
     }
+    /**
+     * Apaga todas as informações do formulario de cadastro de aluno
+     */
     public void sairDadosTabelaAlunos(){
         switch(tabela_aluno.getSelectionModel().getSelectedIndex()){
                     case -1:operacao = "cadastrar";System.out.println("Cadastrando");break;
                     default:operacao = "update";System.out.println("Update");break;
-                }
+        }
         txt_nomeAluno.setText("");
         txt_senhaAluno.setText("");                        
         date_dataNascimentoAluno.setValue(null);        
@@ -451,6 +564,10 @@ public class FXML_principalController implements Initializable {
         combo_turma.setValue(null);
         combo_turno.setValue(null);
     }  
+    /**
+     * lista o conteudo da tabela aluno
+     * @param aluno usado para pesquisar um aluno especifico
+     */
     public void listaTabelaAlunos(String aluno){
         String linhas = (String)combo_numeroLinhas.getValue();
         if(combo_numeroLinhas.getValue() == null){
@@ -494,6 +611,9 @@ public class FXML_principalController implements Initializable {
     
     private final ObservableList<LiberadosBean> ConteudoTabelaLiberados = FXCollections.observableArrayList();
     ArrayList liberados = new ArrayList();
+    /**
+     * Lista o conteudo a da tabela liberados
+     */
     public void listaTabelaLiberados(){
         ConteudoTabelaLiberados.clear();
         Sql novo = new Sql();
@@ -588,6 +708,7 @@ public class FXML_principalController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         getChartData();
+        //setStatisticas();
         //listaHorario.addAll();
         progress.setVisible(true);  
         progress_hora.setVisible(false);
@@ -719,6 +840,17 @@ public class FXML_principalController implements Initializable {
         tabela_Liberados.setItems(ConteudoTabelaLiberados);
         listaTabelaLiberados();
         
+        combo_estatisticaSerie.getItems().add("1");
+        combo_estatisticaSerie.getItems().add("2");
+        combo_estatisticaSerie.getItems().add("3");
+        
+        combo_estatisticaTurma.getItems().add("A");
+        combo_estatisticaTurma.getItems().add("B");
+        combo_estatisticaTurma.getItems().add("C");
+        
+        combo_estatisticaTurno.getItems().add("Matutino");
+        combo_estatisticaTurno.getItems().add("Vespertino");
+        combo_estatisticaTurno.getItems().add("Noturno");
         
         combo_generoFiltro.getItems().add("M");
         combo_generoFiltro.getItems().add("F");
@@ -733,7 +865,13 @@ public class FXML_principalController implements Initializable {
         AcompanharLocalizacao(true);
     } 
     
-    
+    /**
+     * lista o historico de presença do aluno
+     * @param nome 
+     * @param id 
+     * @param turno 
+     * @param status 
+     */
     public void listaHistorico(String nome,int id,String turno,String status){
         ListaHistorico his = new ListaHistorico();
         ArrayList retorno = new ArrayList();
@@ -746,7 +884,10 @@ public class FXML_principalController implements Initializable {
         
     }
     
-    
+    /**
+     * Acompanha a presença do aluno
+     * @param continuar 
+     */
     public void AcompanharLocalizacao(boolean continuar){
         Timer time = new Timer();
         final long SEGUNDOS = (2000 * 5);
@@ -776,6 +917,9 @@ public class FXML_principalController implements Initializable {
                                 ConteudoTabelaAluno.get(j).getHora().setValue(objeto.getHora());                                
                             }
                             colorir();
+                            li = 0;
+                            pre = 0;
+                            fa = 0;
                         }  
                     }                    
                 };
@@ -789,7 +933,9 @@ public class FXML_principalController implements Initializable {
         }
 
     }
-    
+    /**
+     * Executa os metodos listaTabelaAlunos() e listaTabelaLiberados()
+     */
     public void atualizarTabelas(){
         //atualizando todas as tabelas
         try{
@@ -801,6 +947,9 @@ public class FXML_principalController implements Initializable {
         
     }
     int pre = 0,li = 0,fa = 0;
+    /**
+     * Adiciona cor nas tabelas aluno e liberados
+     */
     public void colorir(){
         tabela_aluno.setRowFactory(tv -> new TableRow<AlunosBean>() {
             public void updateItem(AlunosBean item, boolean empty) {
@@ -817,11 +966,15 @@ public class FXML_principalController implements Initializable {
                     setStyle("-fx-background-color:#FF4040;");                    
                     fa++;
                 }
-                if((li+pre+fa) == ConteudoTabelaAluno.size()){
-                    int p1,p2,p3;
+                if((li+pre+fa) == ConteudoTabelaAluno.size() || ConteudoTabelaAluno.isEmpty()){
+                    int p1 = 0,p2 = 0,p3 = 0;
+                    if(ConteudoTabelaAluno.isEmpty()){
+                        
+                    }else{                                            
                     p1 = (li*100)/ConteudoTabelaAluno.size();
                     p2 = (pre*100)/ConteudoTabelaAluno.size();
-                    p3 = (fa*100)/ConteudoTabelaAluno.size();                    
+                    p3 = (fa*100)/ConteudoTabelaAluno.size(); 
+                    }
                     criarGrafico(p1,li,p2,pre,p3,fa);
                     li = 0;
                     pre = 0;
@@ -845,6 +998,8 @@ public class FXML_principalController implements Initializable {
                 }
             }
         });
+        
+        
     }
     
 }
