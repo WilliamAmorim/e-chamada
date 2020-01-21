@@ -7,6 +7,7 @@ package br.com.william.Echamada.view;
 
 
 
+import java.io.IOException;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
@@ -22,6 +23,7 @@ public class AbrirTelas extends Application{
     private static Stage stage;
     private static Scene ScenePrincipal;
     
+    
     int inicialize = 0;
 
     
@@ -30,6 +32,8 @@ public class AbrirTelas extends Application{
         AbrirTelas.stage = stage;
         Parent fxmlInicio = FXMLLoader.load(getClass().getResource("FXML_principal.fxml"));
         ScenePrincipal = new Scene(fxmlInicio);
+        
+      
         
         
         
@@ -106,10 +110,11 @@ public class AbrirTelas extends Application{
         switch(scene){
             case "principal":stage.setScene(ScenePrincipal);break;
             
+            
         }
         
     }
-
+   
     /**
      * @param args the command line arguments
      */

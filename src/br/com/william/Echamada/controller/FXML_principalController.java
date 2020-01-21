@@ -15,11 +15,15 @@ import br.com.william.Echamada.util.MapUtil;
 import br.com.william.Echamada.util.MetodosSql;
 import br.com.william.Echamada.util.Util;
 import br.com.william.Echamada.util.UtilLiberarAlunos;
+import br.com.william.Echamada.view.AbrirCriarSerie;
+import br.com.william.Echamada.view.AbrirTelas;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -49,9 +53,12 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.web.WebView;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -448,9 +455,16 @@ public class FXML_principalController implements Initializable {
                 if(ConteudoTabelaAluno.size() > 0){
                     Id = ConteudoTabelaAluno.get(i).getId().getValue();
                 }
-                execute.CadastrarAluno(operacao,"456987", txt_nomeAluno.getText(),txt_senhaAluno.getText(),date_dataNascimentoAluno.getValue(), combo_sexoAluno.getValue()+"", txt_enderecoAluno.getText(), nome_pai.getText(), txt_nomeMae.getText(), txt_telefone.getText(), combo_serie.getValue()+"", combo_turma.getValue()+"", combo_turno.getValue()+"",Id);                //ConteudoTabelaAluno.get(i).getId().getValue()
-                System.err.println("Cadastrado");
-                listaTabelaAlunos("null"); 
+                boolean resposta = Util.verificarData(date_dataNascimentoAluno.getValue().toString());
+                if(resposta){                   
+                    execute.CadastrarAluno(operacao,"456987", txt_nomeAluno.getText(),txt_senhaAluno.getText(),date_dataNascimentoAluno.getValue(), combo_sexoAluno.getValue()+"", txt_enderecoAluno.getText(), nome_pai.getText(), txt_nomeMae.getText(), txt_telefone.getText(), combo_serie.getValue()+"", combo_turma.getValue()+"", combo_turno.getValue()+"",Id);                //ConteudoTabelaAluno.get(i).getId().getValue()
+                    System.err.println("Cadastrado");
+                    listaTabelaAlunos("null"); 
+                }else{
+                    Alert dialogoInfo = new Alert(Alert.AlertType.ERROR);                
+                    dialogoInfo.setHeaderText("Data Invalida");
+                    dialogoInfo.showAndWait();
+                }
                 //BT_cadastrarAluno.setText("Cadastrar");
            // }
         //}.start();
@@ -665,9 +679,16 @@ public class FXML_principalController implements Initializable {
     
     @FXML
     void BT_liberar(ActionEvent event) {        
-        UtilLiberarAlunos li = new UtilLiberarAlunos();
-        li.liberarAlunos((String)combo_serieLiberados.getValue(), (String)combo_turmaLiberados.getValue(), (String)combo_turnoLiberados.getValue(), txt_alunoLiberados.getText(),date_periodoLiberados.getValue(), txt_mensagem.getText(),check_todosLiberados.isSelected());
-        listaTabelaLiberados();
+        boolean resposta = Util.verificarData(date_periodoLiberados.getValue().toString());
+                if(resposta){                                       
+                    UtilLiberarAlunos li = new UtilLiberarAlunos();
+                    li.liberarAlunos((String)combo_serieLiberados.getValue(), (String)combo_turmaLiberados.getValue(), (String)combo_turnoLiberados.getValue(), txt_alunoLiberados.getText(),date_periodoLiberados.getValue(), txt_mensagem.getText(),check_todosLiberados.isSelected());
+                    listaTabelaLiberados();
+                }else{
+                    Alert dialogoInfo = new Alert(Alert.AlertType.ERROR);                
+                    dialogoInfo.setHeaderText("Data Invalida");
+                    dialogoInfo.showAndWait();
+                }
     }
     //***************************************************************************
     
@@ -1000,6 +1021,24 @@ public class FXML_principalController implements Initializable {
         });
         
         
+    }
+    
+     @FXML
+    void criarSerie(ActionEvent event) throws Exception {
+        AbrirCriarSerie abrir = new AbrirCriarSerie();        
+        abrir.start(new Stage());        
+    }
+   
+       @FXML
+    void sairData(MouseEvent event) {
+        if(date_dataNascimentoAluno.getValue() != null){
+            
+                
+            
+        }else{
+             System.err.println("sair Mouse 2");
+        }
+        System.err.println("sair Mouse");
     }
     
 }

@@ -54,6 +54,24 @@ public class Util {
         }
         return true;
     }
+    public static boolean verificarData(String data){
+        Date date2 = new Date(Util.time());
+        Date date1 = new Date(converterData(data,"normal"));
+        System.out.println("Datas "+date2+" - "+date1);
+        if (date2.compareTo(date1) > 0) {         
+            //System.out.println("Date1 é posterior a Date2");
+            //updateLiberacao(date02);//Date1 é posterior a Date2
+        } else if (date2.compareTo(date1) < 0) {     
+            //System.out.println("Data1 é anterior a Data2");
+           return false;
+        } else if (date2.compareTo(date1) == 0) {    
+            //System.out.println("Date1 is equal to Date2");           
+           return false;
+        } else {
+           // System.out.println("How to get here?");
+        }
+        return true;        
+    }
     
     
     /**
