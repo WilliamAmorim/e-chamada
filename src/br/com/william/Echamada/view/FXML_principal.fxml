@@ -45,7 +45,9 @@
       <menus>
         <Menu mnemonicParsing="false" text="Configurações">
           <items>
-            <MenuItem mnemonicParsing="false" onAction="#criarSerie" text="Criar Serie" />
+                  <MenuItem mnemonicParsing="false" text="Usuarios" />
+            <MenuItem mnemonicParsing="false" onAction="#criarSerie" text="Series" />
+                  <MenuItem mnemonicParsing="false" text="Sair" />
           </items>
         </Menu>
       </menus>
@@ -60,55 +62,6 @@
             <Label text="Numero de linhas:" />
             <ComboBox fx:id="combo_numeroLinhas" prefHeight="25.0" prefWidth="82.0" promptText="25" />
             <Separator layoutX="359.0" layoutY="10.0" prefHeight="30.0" prefWidth="21.0" />
-            <Label text="Alunos: 50">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
-            <Label layoutX="661.0" layoutY="15.0" text="Presente: 50">
-               <font>
-                  <Font size="15.0" />
-               </font>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <padding>
-                  <Insets left="8.0" />
-               </padding>
-            </Label>
-            <Label layoutX="734.0" layoutY="15.0" text="Faltas: 50">
-               <font>
-                  <Font size="15.0" />
-               </font>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <padding>
-                  <Insets left="8.0" />
-               </padding>
-            </Label>
-            <Label layoutX="815.0" layoutY="15.0" text="Alunos: 50">
-               <font>
-                  <Font size="15.0" />
-               </font>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <padding>
-                  <Insets left="8.0" />
-               </padding>
-            </Label>
-            <Label layoutX="896.0" layoutY="15.0" text="Alunos: 50">
-               <font>
-                  <Font size="15.0" />
-               </font>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <padding>
-                  <Insets left="8.0" />
-               </padding>
-            </Label>
         </items>
       </ToolBar>
     <SplitPane dividerPositions="0.5" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
