@@ -8,6 +8,7 @@
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -15,44 +16,59 @@
 
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.william.Echamada.controller.FXML_loginController">
    <children>
-      <StackPane prefHeight="150.0" prefWidth="400.0">
+      <StackPane prefHeight="150.0" prefWidth="300.0">
          <children>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="8.0">
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="8.0" style="-fx-background-color: #363636;">
+               <children>
+                  <Label text="Login" textFill="WHITE">
+                     <font>
+                        <Font size="50.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="txt_usuarioLogin" focusTraversable="false" maxWidth="200.0" promptText="Usuario">
+                     <effect>
+                        <DropShadow />
+                     </effect></TextField>
+                  <PasswordField fx:id="txt_senhaLogin" focusTraversable="false" maxWidth="200.0" promptText="Senha">
+                     <effect>
+                        <DropShadow />
+                     </effect></PasswordField>
+                  <Button defaultButton="true" focusTraversable="false" maxWidth="200.0" mnemonicParsing="false" onAction="#BT_entrarLogin" text="Entrar">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                  </Button>
+                  <Hyperlink focusTraversable="false" text="Esqueceu a senha?" />
+                  <ProgressIndicator fx:id="progress_login" />
+               </children>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </VBox>
+         </children>
+      </StackPane>
+      <Separator orientation="VERTICAL" prefHeight="200.0" visible="false" />
+      <StackPane prefHeight="150.0" prefWidth="500.0">
+         <children>
+            <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="8.0">
                <children>
                   <Label text="Cadastre-se">
                      <font>
                         <Font size="50.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txt_codigoAcesso" layoutX="109.0" layoutY="181.0" maxWidth="200.0" promptText="Codigo de acesso" />
-                  <TextField fx:id="txt_usuarioCadastro" maxWidth="200.0" promptText="Usuario" />
-                  <PasswordField fx:id="txt_senhaCadastro" maxWidth="200.0" promptText="Senha" />
-                  <Button maxWidth="200.0" mnemonicParsing="false" onAction="#BT_cadastrese" text="Cadastre-se" />
-                  <ProgressIndicator fx:id="progress_cadastro" />
+                  <TextField fx:id="txt_codigoAcesso" focusTraversable="false" layoutX="109.0" layoutY="181.0" maxWidth="300.0" promptText="Codigo de acesso" />
+                  <TextField fx:id="txt_usuarioCadastro" focusTraversable="false" maxWidth="300.0" promptText="Usuario" />
+                  <PasswordField fx:id="txt_senhaCadastro" focusTraversable="false" maxWidth="300.0" promptText="Senha" />
+                  <Button defaultButton="true" focusTraversable="false" maxWidth="100.0" mnemonicParsing="false" onAction="#BT_cadastrese" text="Cadastre-se" />
+                  <ProgressIndicator fx:id="progress_cadastro" maxWidth="100.0" />
                </children>
-            </VBox>
-         </children>
-      </StackPane>
-      <Separator orientation="VERTICAL" prefHeight="200.0" />
-      <StackPane prefHeight="150.0" prefWidth="400.0">
-         <children>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="8.0">
-               <children>
-                  <Label text="Login">
-                     <font>
-                        <Font size="50.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="txt_usuarioLogin" maxWidth="200.0" promptText="Usuario" />
-                  <PasswordField fx:id="txt_senhaLogin" maxWidth="200.0" promptText="Senha" />
-                  <Button maxWidth="200.0" mnemonicParsing="false" onAction="#BT_entrarLogin" text="Entrar">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </Button>
-                  <Hyperlink text="Esqueceu a senha?" />
-                  <ProgressIndicator fx:id="progress_login" />
-               </children>
+               <padding>
+                  <Insets left="30.0" />
+               </padding>
             </VBox>
          </children>
       </StackPane>

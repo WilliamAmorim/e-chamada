@@ -31,7 +31,7 @@
             <TextField fx:id="txt_turma" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label text="Serie:" GridPane.rowIndex="1" />
             <Label layoutX="10.0" layoutY="21.0" text="Turma:" GridPane.rowIndex="2" />
-            <Button mnemonicParsing="false" onAction="#BT_adicionar" text="Adicionar" GridPane.rowIndex="3" />
+            <Button defaultButton="true" mnemonicParsing="false" onAction="#BT_adicionar" text="Adicionar" GridPane.rowIndex="3" />
             <Label text="Series">
                <font>
                   <Font size="20.0" />
@@ -73,6 +73,6 @@
             </Label>
          </children>
       </GridPane>
-      <Button layoutX="540.0" layoutY="244.0" mnemonicParsing="false" onAction="#BT_remover" text="Remover" />
+      <Button defaultButton="true" layoutX="540.0" layoutY="244.0" mnemonicParsing="false" onAction="#BT_remover" text="Remover" />
    </children>
 </AnchorPane>
