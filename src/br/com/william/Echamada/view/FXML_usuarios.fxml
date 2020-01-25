@@ -6,11 +6,12 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="352.0" prefWidth="377.0" spacing="8.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="352.0" prefWidth="377.0" spacing="8.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.william.Echamada.controller.FXML_usuariosController">
    <children>
       <Label text="Criar chave de acesso">
          <font>
@@ -22,8 +23,11 @@
       </Label>
       <HBox prefHeight="31.0" prefWidth="377.0" spacing="8.0">
          <children>
-            <RadioButton mnemonicParsing="false" text="Administrador" />
-            <RadioButton mnemonicParsing="false" text="Usuario" />
+            <RadioButton fx:id="radio_administrador" mnemonicParsing="false" text="Administrador">
+               <toggleGroup>
+                  <ToggleGroup fx:id="radio_grupo" />
+               </toggleGroup></RadioButton>
+            <RadioButton fx:id="radio_usuario" mnemonicParsing="false" text="Usuario" toggleGroup="$radio_grupo" />
          </children>
          <padding>
             <Insets left="8.0" />
@@ -34,15 +38,15 @@
             <Insets left="8.0" />
          </padding>
          <children>
-            <Button defaultButton="true" mnemonicParsing="false" text="Criar chave" />
-            <Button defaultButton="true" layoutX="18.0" layoutY="10.0" mnemonicParsing="false" text="Remover" />
+            <Button defaultButton="true" mnemonicParsing="false" onAction="#BT_criarChave" text="Criar chave" />
+            <Button defaultButton="true" layoutX="18.0" layoutY="10.0" mnemonicParsing="false" onAction="#BT_removerChave" text="Remover" />
          </children>
       </HBox>
-      <TableView focusTraversable="false" prefHeight="263.0" prefWidth="377.0">
+      <TableView fx:id="tabela_chaves" focusTraversable="false" prefHeight="263.0" prefWidth="377.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="Chave de acesso" />
-            <TableColumn prefWidth="75.0" text="Usuario" />
-            <TableColumn prefWidth="75.0" text="Data" />
+          <TableColumn fx:id="coluna_tipo" prefWidth="75.0" text="Tipo" />
+            <TableColumn fx:id="coluna_chave" prefWidth="75.0" text="Chave de acesso" />
+            <TableColumn fx:id="coluna_usuario" prefWidth="75.0" text="Usuario" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

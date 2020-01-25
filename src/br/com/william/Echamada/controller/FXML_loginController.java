@@ -144,7 +144,7 @@ public class FXML_loginController implements Initializable {
             
             AbrirTelas abrir = new AbrirTelas();
             criarLog(txt_usuarioCadastro.getText());
-            abrir.abrirScene("principal");
+            Platform.runLater(()->abrir.abrirScene("principal")); 
         }else{
             
         }

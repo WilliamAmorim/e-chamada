@@ -50,7 +50,10 @@ public class FXML_criarSerieController implements Initializable {
     @FXML
     void BT_adicionar(ActionEvent event) {
         System.out.println("Botão presionado");
-        cadastrarSerie();
+        if(txt_turma.getText() !=  null && txt_serie.getText() != null){
+            cadastrarSerie();            
+        }
+        
     }
 
     @FXML
@@ -128,7 +131,7 @@ public class FXML_criarSerieController implements Initializable {
         }else{
             values.add(t);
             values.add(s);
-            excluir.executeQuery("DELETE FROM `turma` WHERE turma = ? AND id_serie = ?", values);
+            excluir.executeQuery("DELETE FROM `turma` WHERE turma = ? AND serie = ?", values);
         }
     }
     public void cadastrarSerie(){
@@ -166,7 +169,7 @@ public class FXML_criarSerieController implements Initializable {
             for (int i = 0; i < turmas.length; i++) {
                 values.add(id);
                 values.add(turmas[i]);
-                cadastrar.executeQuery("INSERT INTO `turma`(`id_serie`, `turma`) VALUES (?,?)", values);
+                cadastrar.executeQuery("INSERT INTO `turma`(`serie`, `turma`) VALUES (?,?)", values);
                 values.clear();
             }
             
@@ -200,7 +203,7 @@ public class FXML_criarSerieController implements Initializable {
         ArrayList r = new ArrayList();
         String[] retorno = {"turma"};
         values.add(serie);
-        r = cadastrar.executeQuery("SELECT * FROM `turma` WHERE id_serie = ?", values, retorno);
+        r = cadastrar.executeQuery("SELECT * FROM `turma` WHERE serie = ?", values, retorno);
         
         for (int i = 0; i < r.size(); i++) {
             String a = r.get(i).toString();

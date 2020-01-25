@@ -6,20 +6,19 @@
 package br.com.william.Echamada.view;
 
 import javafx.application.Application;
+import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-
-
 /**
  *
  * @author willi
  */
-public class AbrirCriarSerie extends Application {
+public class AbrirUsuario extends Application {
     
-    static Stage stage;
+    private static Stage stage;
     private static Scene ScenePrincipal;
     
     
@@ -29,7 +28,7 @@ public class AbrirCriarSerie extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         AbrirCriarSerie.stage = stage;
-        Parent fxmlInicio = FXMLLoader.load(getClass().getResource("FXML_criarSerie.fxml"));
+        Parent fxmlInicio = FXMLLoader.load(getClass().getResource("FXML_usuarios.fxml"));
         ScenePrincipal = new Scene(fxmlInicio);
         
       
@@ -62,5 +61,4 @@ public class AbrirCriarSerie extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
 }

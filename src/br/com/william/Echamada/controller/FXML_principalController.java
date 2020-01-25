@@ -17,6 +17,7 @@ import br.com.william.Echamada.util.Util;
 import br.com.william.Echamada.util.UtilLiberarAlunos;
 import br.com.william.Echamada.view.AbrirCriarSerie;
 import br.com.william.Echamada.view.AbrirTelas;
+import br.com.william.Echamada.view.AbrirUsuario;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -1027,6 +1028,17 @@ public class FXML_principalController implements Initializable {
     void criarSerie(ActionEvent event) throws Exception {
         AbrirCriarSerie abrir = new AbrirCriarSerie();        
         abrir.start(new Stage());        
+    }
+    
+      @FXML
+    void abrirUsuario(ActionEvent event) throws Exception {
+        AbrirUsuario abrir = new AbrirUsuario();        
+        abrir.start(new Stage());        
+    }
+    
+      @FXML
+    void sairUsuario(ActionEvent event) throws Exception {
+       
     }
    
        @FXML

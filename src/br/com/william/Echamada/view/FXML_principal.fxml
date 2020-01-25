@@ -45,9 +45,9 @@
       <menus>
         <Menu mnemonicParsing="false" text="Configurações">
           <items>
-                  <MenuItem mnemonicParsing="false" text="Usuarios" />
+                  <MenuItem mnemonicParsing="false" onAction="#abrirUsuario" text="Usuarios" />
             <MenuItem mnemonicParsing="false" onAction="#criarSerie" text="Series" />
-                  <MenuItem mnemonicParsing="false" text="Sair" />
+                  <MenuItem mnemonicParsing="false" onAction="#sairUsuario" text="Sair" />
           </items>
         </Menu>
       </menus>
