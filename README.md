@@ -4,5 +4,6 @@ Foi desenvolvido um sistema capaz de monitorar a frequência diaria do estudante
 # Modelagem
 ## Diagrama de Atividade
 
-**Login e cadastro de Aluno** 
+>**Login e cadastro de Aluno** 
+
 ![alt text](https://github.com/WilliamAmorim/e-chamada/blob/master/diagramas/DiagramaAtividade(logineCadastroAluno).jpg "Logo Title Text 1")
