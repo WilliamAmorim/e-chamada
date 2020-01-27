@@ -681,7 +681,8 @@ public class FXML_principalController implements Initializable {
     @FXML
     void BT_liberar(ActionEvent event) {        
         boolean resposta = Util.verificarData(date_periodoLiberados.getValue().toString());
-                if(resposta){                                       
+        System.out.println("Resposata"+resposta);
+                if(!resposta){                                       
                     UtilLiberarAlunos li = new UtilLiberarAlunos();
                     li.liberarAlunos((String)combo_serieLiberados.getValue(), (String)combo_turmaLiberados.getValue(), (String)combo_turnoLiberados.getValue(), txt_alunoLiberados.getText(),date_periodoLiberados.getValue(), txt_mensagem.getText(),check_todosLiberados.isSelected());
                     listaTabelaLiberados();
