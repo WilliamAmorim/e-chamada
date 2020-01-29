@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import javafx.scene.control.Alert;
 
 /**
  *
@@ -21,25 +22,41 @@ public class MetodosSql extends Sql{
     
     public void CadastrarAluno(String operacao,String codigo,String aluno,String senha,LocalDate data,String sexo,String endereco,String pai,String mae,String telefone,String serie,String turma,String turno,String id){               
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = Date.from(data.atStartOfDay(ZoneId.systemDefault()).toInstant());             
-        ArrayList values = new ArrayList();
-        values.add(aluno);
-        values.add(senha);       
-        values.add(Util.converterData(data.toString(), "normal"));//dateFormat.format(date)
-        values.add(sexo);
-        values.add(endereco);
-        values.add(pai);
-        values.add(mae);
-        values.add(telefone);
-        values.add(serie);
-        values.add(turma);
-        values.add(turno);        
-        
-        switch(operacao){
-            case "cadastrar":values.add(0);executeQuery("INSERT INTO `alunos`(`nome_aluno`, `senha`, `data_nascimento`, `sexo`, `endereco`, `nome_pai`, `nome_mae`, `telefone_responsavel`, `serie`, `turma`, `turno`,`status`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", values);break;
-            case "update":values.add(id);executeQuery("UPDATE `alunos` SET `nome_aluno`=?, `senha`=?, `data_nascimento`=?, `sexo`=?, `endereco`=?, `nome_pai`=?, `nome_mae`=?, `telefone_responsavel`=?, `serie`=?, `turma`=?, `turno`=? WHERE id_aluno = ?", values);break;
+        Date date = Date.from(data.atStartOfDay(ZoneId.systemDefault()).toInstant()); 
+        if(!"".equals(codigo) && !"".equals(aluno) && !"".equals(senha) && date != null && !"".equals(sexo) && !"".equals(endereco) && !"".equals(pai) && !"".equals(mae) && !"".equals(telefone) && !"".equals(serie) && !"".equals(turma) && !"".equals(turno)){
+            ArrayList values = new ArrayList();
+            values.add(aluno);
+            values.add(senha);       
+            values.add(Util.converterData(data.toString(), "normal"));//dateFormat.format(date)
+            values.add(sexo);
+            values.add(endereco);
+            values.add(pai);
+            values.add(mae);
+            values.add(telefone);
+            values.add(serie);
+            values.add(turma);
+            values.add(turno);            
+            switch(operacao){
+                case "cadastrar":
+                    values.add(0);executeQuery("INSERT INTO `alunos`(`nome_aluno`, `senha`, `data_nascimento`, `sexo`, `endereco`, `nome_pai`, `nome_mae`, `telefone_responsavel`, `serie`, `turma`, `turno`,`status`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", values);
+
+                    ArrayList v = new ArrayList();v.add(codigo);v.add(UtilLog.retornarIDaluno(aluno));
+                    executeQuery("INSERT INTO `codigo_aluno`(`codigo`, `id_aluno`) VALUES (?,?)",v);
+
+                    v.clear();v.add(UtilLog.retornarIDaluno(aluno));v.add(pai);v.add(Util.gerarSenha());
+                    executeQuery("INSERT INTO `pais`(`id_aluno`,`usuario`,`senha`) VALUES (?,?,?)",v);                
+                break;
+                case "update":
+                    values.add(id);executeQuery("UPDATE `alunos` SET `nome_aluno`=?, `senha`=?, `data_nascimento`=?, `sexo`=?, `endereco`=?, `nome_pai`=?, `nome_mae`=?, `telefone_responsavel`=?, `serie`=?, `turma`=?, `turno`=? WHERE id_aluno = ?", values);
+                break;
+            }
+        }else{
+            Alert dialogoInfo = new Alert(Alert.AlertType.WARNING);                
+                dialogoInfo.setHeaderText("Preencha todos os dados");
+                dialogoInfo.showAndWait();
+    
+
         }
-        
     }
     public String criarQueryAluno(String serie,String turma,String turno,String status,String genero,String aluno,String numeroLinhas){
         String query = "SELECT * FROM `alunos` WHERE 1 ";

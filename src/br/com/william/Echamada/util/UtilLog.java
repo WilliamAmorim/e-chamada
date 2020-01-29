@@ -38,7 +38,7 @@ public class UtilLog {
         }
     }
     
-     public static String retornarID(String usuario){
+    public static String retornarID(String usuario){
         Sql buscarID = new Sql();
         String[] r = {"id_admin"};
         ArrayList values = new ArrayList();
@@ -54,6 +54,21 @@ public class UtilLog {
         return null;
     }
      
+    public static String retornarIDaluno(String usuario){
+        Sql buscarID = new Sql();
+        String[] r = {"id_aluno"};
+        ArrayList values = new ArrayList();
+        values.add(usuario);
+        ArrayList retorno = new ArrayList();        
+        retorno = buscarID.executeQuery("SELECT `id_aluno` FROM `alunos` WHERE  nome_aluno = ?", values,r);
+        if(!retorno.isEmpty()){
+            String a = retorno.get(0).toString();
+            String b = a.replace("[", "").replace("]", "");
+            String[] tokens = b.split(",");
+            return tokens[0].trim();
+        }
+        return null;
+    }
     public void sairLog() throws IOException{
         
         File file = new File(getDiretoriolog());

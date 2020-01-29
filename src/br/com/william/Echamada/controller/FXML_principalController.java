@@ -19,8 +19,11 @@ import br.com.william.Echamada.util.UtilLog;
 import br.com.william.Echamada.view.AbrirCriarSerie;
 import br.com.william.Echamada.view.AbrirTelas;
 import br.com.william.Echamada.view.AbrirUsuario;
+import java.awt.Desktop.Action;
+import java.awt.Dialog;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -39,7 +42,10 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.chart.PieChart.Data;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -297,6 +303,47 @@ public class FXML_principalController implements Initializable {
     }
     //**************************************************************************
     
+    //Excluir dado da tabela****************************************************
+    private void excluir(){      
+        int index = tabela_aluno.getSelectionModel().getSelectedIndex();
+        if(index != -1){
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Confirmação");
+            alert.setHeaderText("Tem certeza que deseja excluir este aluno?");
+
+            ButtonType buttonTypeOne = new ButtonType("Excluir",ButtonData.YES);
+            ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.NO);
+
+            alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeCancel);
+
+                Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.get() == buttonTypeOne){
+                // ... user chose "One"
+                Sql excluir = new Sql();
+                ArrayList values = new ArrayList();
+                String id = UtilLog.retornarIDaluno(ConteudoTabelaAluno.get(index).getAluno().getValue());
+                values.add(ConteudoTabelaAluno.get(index).getAluno().getValue());
+                excluir.executeQuery("DELETE FROM `alunos` WHERE nome_aluno = ?", values);
+                values.clear();
+                values.add(id);
+                excluir.executeQuery("DELETE FROM `codigo_aluno` WHERE id_aluno = ?",values);
+                excluir.executeQuery("DELETE FROM `historicolocalizacao` WHERE id_aluno = ?", values);
+                excluir.executeQuery("DELETE FROM `pais` WHERE id_aluno = ?", values);
+            } else {
+                // ... user chose CANCEL or closed the dialog
+            }
+        }
+     
+    }
+    @FXML
+    void BT_excluir(ActionEvent event) {
+        excluir();
+        
+    }
+ 
+    //**************************************************************************
+    
     //Tabela_Alunos*************************************************************    
     @FXML
     private TableView<AlunosBean> tabela_aluno;
@@ -459,7 +506,7 @@ public class FXML_principalController implements Initializable {
                 }
                 boolean resposta = Util.verificarData(date_dataNascimentoAluno.getValue().toString());
                 if(resposta){                   
-                    execute.CadastrarAluno(operacao,"456987", txt_nomeAluno.getText(),txt_senhaAluno.getText(),date_dataNascimentoAluno.getValue(), combo_sexoAluno.getValue()+"", txt_enderecoAluno.getText(), nome_pai.getText(), txt_nomeMae.getText(), txt_telefone.getText(), combo_serie.getValue()+"", combo_turma.getValue()+"", combo_turno.getValue()+"",Id);                //ConteudoTabelaAluno.get(i).getId().getValue()
+                    execute.CadastrarAluno(operacao,txt_codigoAluno.getText(), txt_nomeAluno.getText(),txt_senhaAluno.getText(),date_dataNascimentoAluno.getValue(), combo_sexoAluno.getValue()+"", txt_enderecoAluno.getText(), nome_pai.getText(), txt_nomeMae.getText(), txt_telefone.getText(), combo_serie.getValue()+"", combo_turma.getValue()+"", combo_turno.getValue()+"",Id);                //ConteudoTabelaAluno.get(i).getId().getValue()
                     System.err.println("Cadastrado");
                     listaTabelaAlunos("null"); 
                 }else{
@@ -731,6 +778,7 @@ public class FXML_principalController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        operacao = "cadastrar";
         getChartData();
         //setStatisticas();
         //listaHorario.addAll();

@@ -55,7 +55,7 @@
       <ToolBar prefHeight="40.0" prefWidth="200.0">
         <items>
           <Button defaultButton="true" mnemonicParsing="false" onAction="#BT_atualizar" text="Atualizar" />
-            <Button defaultButton="true" layoutX="10.0" layoutY="13.0" mnemonicParsing="false" onAction="#BT_atualizar" text="Excluir" />
+            <Button defaultButton="true" layoutX="10.0" layoutY="13.0" mnemonicParsing="false" onAction="#BT_excluir" text="Excluir" />
             <Separator layoutX="334.0" layoutY="10.0" prefHeight="30.0" prefWidth="21.0" />
             <Button defaultButton="true" mnemonicParsing="false" onAction="#BT_pesquisar" text="Pesquisar" />
             <TextField fx:id="txt_pesquisar" prefHeight="25.0" prefWidth="193.0" />
