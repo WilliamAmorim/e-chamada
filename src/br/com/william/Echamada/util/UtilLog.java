@@ -6,8 +6,15 @@
 package br.com.william.Echamada.util;
 
 import br.com.william.Echamada.sql.Sql;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.InetAddress;
 import java.util.ArrayList;
+import javafx.scene.control.Alert;
 
 /**
  *
@@ -45,5 +52,38 @@ public class UtilLog {
             return tokens[0].trim();
         }
         return null;
+    }
+     
+    public void sairLog() throws IOException{
+        
+        File file = new File(getDiretoriolog());
+        try {
+            FileInputStream arquivo = new FileInputStream(getDiretoriolog());
+            InputStreamReader in = new InputStreamReader(arquivo);
+            BufferedReader br = new BufferedReader(in);
+            Sql novo = new Sql();
+            ArrayList values = new ArrayList();           
+            values.add(InetAddress.getLocalHost().getHostAddress());
+            arquivo.close();
+            novo.executeQuery("DELETE FROM `log` WHERE ip = ?", values);
+        
+                try{
+                    if (file.delete()) {}
+                    Alert dialogoInfo = new Alert(Alert.AlertType.CONFIRMATION);                
+                    dialogoInfo.setHeaderText("Deletando o arquivo");
+                    dialogoInfo.setContentText("");
+                    dialogoInfo.showAndWait();
+                }catch(Exception ex){
+                    Alert dialogoInfo = new Alert(Alert.AlertType.WARNING);                
+                    dialogoInfo.setHeaderText("Erro ao deletar arquivo");
+                    dialogoInfo.setContentText("");
+                    dialogoInfo.showAndWait();
+                }    
+            
+            System.exit(0);
+
+        } catch (FileNotFoundException ex) {
+            
+        }
     }
 }

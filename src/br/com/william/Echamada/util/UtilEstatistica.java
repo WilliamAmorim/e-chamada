@@ -18,17 +18,14 @@ import org.joda.time.Period;
 public class UtilEstatistica {
     public static void intervalo(){
         DateTime start = new DateTime(2019, 1, 1, 0, 0, 0, 0);
-        DateTime end = new DateTime(2019, 12, 25, 0, 0, 0, 0);
+        DateTime end = new DateTime(2020, 1, 10, 0, 0, 0, 0);
         Interval interval = new Interval(start, end);
                 
         Chronology chrono = interval.getChronology();
         Duration duration = interval.toDuration();
         Period period = interval.toPeriod();
-        listaData(start,end,duration.toStandardDays().getDays());
-        if(period.getYears() > 0 ){
-            //Intervalo  de um ano
-            System.out.println("Intervalo de um ano");
-        }else if(period.getMonths() > 0){
+        listaData(start,end,(int)interval.toDuration().getStandardDays());
+        if(period.getMonths() > 0){
             //Intervalo de um  mês
             System.out.println("Intervalo de um mês");
         }else if(period.getWeeks() > 0){
@@ -43,7 +40,7 @@ public class UtilEstatistica {
     public static void listaData(DateTime ini,DateTime end,int dias){
         String dia,mes = null,ano = null;
         System.out.println("dias:"+dias);
-        int d = 0,m=0,a =1;
+        int d = 0,m=0,a =0;
         DateTime data = null;
         boolean fluxo = true;
         for (int i = 0; i <= dias; i++) {
@@ -56,26 +53,26 @@ public class UtilEstatistica {
                
                 dia = data.dayOfMonth().getAsText();
                 mes = data.getMonthOfYear()+"";
-                if(ini.getMonthOfYear()+m == 12 && ini.getDayOfMonth()+d == 31){
+                if(mes.equals("12") && dia.equals("31")){
                     ano = data.getYear()+a+"";
                     a++;m = 1; d = 1;
                 }else{
-                    ano = data.getYear()+"";
+                    ano = data.getYear()+a+"";
                 }
                 d++;
             }catch(Exception ex){
-                System.err.println("********************************************");
-                //System.err.println("Erro:"+ex);
-                mes = (data.getMonthOfYear()+m)+"";
+                System.err.println("********************************************");                                
                 fluxo = false;                
                 m++;
+                mes = (data.getMonthOfYear()+1)+"";
                 d=2;
-                dia = "1";        
+                dia = "1"; 
                 
                 
             }
            
             System.out.println("Data: "+dia+"/"+mes+"/"+ano);
+            
         }
         
     }

@@ -54,9 +54,10 @@
     </MenuBar>
       <ToolBar prefHeight="40.0" prefWidth="200.0">
         <items>
-          <Button mnemonicParsing="false" onAction="#BT_atualizar" text="Atualizar" />
+          <Button defaultButton="true" mnemonicParsing="false" onAction="#BT_atualizar" text="Atualizar" />
+            <Button defaultButton="true" layoutX="10.0" layoutY="13.0" mnemonicParsing="false" onAction="#BT_atualizar" text="Excluir" />
             <Separator layoutX="334.0" layoutY="10.0" prefHeight="30.0" prefWidth="21.0" />
-            <Button mnemonicParsing="false" onAction="#BT_pesquisar" text="Pesquisar" />
+            <Button defaultButton="true" mnemonicParsing="false" onAction="#BT_pesquisar" text="Pesquisar" />
             <TextField fx:id="txt_pesquisar" prefHeight="25.0" prefWidth="193.0" />
             <Separator prefHeight="30.0" prefWidth="21.0" />
             <Label text="Numero de linhas:" />
@@ -101,8 +102,8 @@
                                     </GridPane>
                                     <HBox prefHeight="30.0" prefWidth="258.0">
                                        <children>
-                                          <Button mnemonicParsing="false" onAction="#BT_filtrarAluno" prefHeight="25.0" prefWidth="86.0" text="Filtrar" />
-                                          <Button mnemonicParsing="false" onAction="#BT_limparFiltro" prefHeight="25.0" prefWidth="96.0" text="Limpar Filtro">
+                                          <Button defaultButton="true" mnemonicParsing="false" onAction="#BT_filtrarAluno" prefHeight="25.0" prefWidth="86.0" text="Filtrar" />
+                                          <Button defaultButton="true" mnemonicParsing="false" onAction="#BT_limparFiltro" prefHeight="25.0" prefWidth="96.0" text="Limpar Filtro">
                                              <HBox.margin>
                                                 <Insets left="5.0" />
                                              </HBox.margin>
@@ -155,7 +156,7 @@
                                     </VBox>
                                     <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="258.0">
                                        <children>
-                                          <Button fx:id="BT_liberar" mnemonicParsing="false" onAction="#BT_liberar" prefHeight="25.0" prefWidth="86.0" text="Liberar" />
+                                          <Button fx:id="BT_liberar" defaultButton="true" mnemonicParsing="false" onAction="#BT_liberar" prefHeight="25.0" prefWidth="86.0" text="Liberar" />
                                           <CheckBox fx:id="check_todosLiberados" mnemonicParsing="false" text="Todos">
                                              <HBox.margin>
                                                 <Insets left="9.0" />
@@ -221,7 +222,7 @@
                                     <ComboBox fx:id="combo_serie" layoutX="101.0" layoutY="119.0" prefHeight="25.0" prefWidth="121.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
                                     <ComboBox fx:id="combo_turma" layoutX="101.0" layoutY="259.0" prefHeight="25.0" prefWidth="121.0" GridPane.columnIndex="1" GridPane.rowIndex="10" />
                                     <ComboBox fx:id="combo_turno" layoutX="101.0" layoutY="287.0" prefHeight="25.0" prefWidth="121.0" GridPane.columnIndex="1" GridPane.rowIndex="11" />
-                                    <Button fx:id="BT_cadastrarAluno" mnemonicParsing="false" onAction="#BT_cadastrarAluno" prefHeight="25.0" prefWidth="74.0" text="Cadastrar" GridPane.rowIndex="12" />
+                                    <Button fx:id="BT_cadastrarAluno" defaultButton="true" mnemonicParsing="false" onAction="#BT_cadastrarAluno" prefHeight="25.0" prefWidth="74.0" text="Cadastrar" GridPane.rowIndex="12" />
                                  </children>
                               </GridPane>
                            </content>
@@ -251,7 +252,7 @@
                                     </GridPane>
                                     <HBox prefHeight="30.0" prefWidth="258.0">
                                        <children>
-                                          <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="86.0" text="Cadastrar" />
+                                          <Button defaultButton="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="86.0" text="Cadastrar" />
                                        </children>
                                        <VBox.margin>
                                           <Insets top="6.0" />
@@ -337,13 +338,13 @@
                      <content>
                         <SplitPane dividerPositions="0.19864341085271317" prefHeight="160.0" prefWidth="200.0">
                            <items>
-                              <ListView fx:id="list_alunos" onMousePressed="#action_list_alunos" prefHeight="649.0" prefWidth="274.0" />
+                              <ListView fx:id="list_alunos" maxWidth="200.0" minWidth="200.0" onMousePressed="#action_list_alunos" prefHeight="649.0" />
                               <SplitPane dividerPositions="0.8921417565485362" minWidth="150.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
                                  <items>
                                     <WebView fx:id="webView_mapa" prefHeight="200.0" prefWidth="200.0" />
                                     <VBox>
                                        <children>
-                                          <ListView fx:id="list_horario" maxHeight="1.7976931348623157E308" minHeight="30.0" onMouseClicked="#action_list_horario" orientation="HORIZONTAL" />
+                                          <ListView fx:id="list_horario" maxHeight="30.0" minHeight="30.0" onMouseClicked="#action_list_horario" orientation="HORIZONTAL" />
                                           <ToolBar prefHeight="40.0" prefWidth="200.0">
                                             <items>
                                                 <DatePicker fx:id="date_dataHora" prefHeight="25.0" prefWidth="102.0" />
@@ -368,7 +369,7 @@
                         </SplitPane>
                      </content>
                   </Tab>
-                  <Tab text="Estatisticas">
+                  <Tab disable="true" text="Estatisticas">
                      <content>
                         <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
                            <items>
@@ -389,7 +390,7 @@
                                     <ToggleButton layoutX="10.0" layoutY="13.0" mnemonicParsing="false" onAction="#toggle_estatisticaAlsente" text="Alsentes" toggleGroup="$estatistica" />
                                     <ToggleButton layoutX="81.0" layoutY="13.0" mnemonicParsing="false" onAction="#toggle_estatisticaLiberados" text="Liberados" toggleGroup="$estatistica" />
                                     <Separator orientation="VERTICAL" prefHeight="8.0" />
-                                  <Button mnemonicParsing="false" onAction="#BT_adicionarEstatistica" text="Adicionar" />
+                                  <Button defaultButton="true" mnemonicParsing="false" onAction="#BT_adicionarEstatistica" text="Adicionar" />
                                     <ComboBox fx:id="combo_estatisticaSerie" prefWidth="100.0" promptText="Serie" />
                                     <ComboBox fx:id="combo_estatisticaTurma" layoutX="66.0" layoutY="13.0" prefWidth="100.0" promptText="Turma" />
                                     <ComboBox fx:id="combo_estatisticaTurno" layoutX="170.0" layoutY="13.0" prefWidth="100.0" promptText="Turno" />

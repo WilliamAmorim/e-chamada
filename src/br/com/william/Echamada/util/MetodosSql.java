@@ -44,7 +44,7 @@ public class MetodosSql extends Sql{
     public String criarQueryAluno(String serie,String turma,String turno,String status,String genero,String aluno,String numeroLinhas){
         String query = "SELECT * FROM `alunos` WHERE 1 ";
         if(!"null".equals(aluno)){
-            query += "AND nome_aluno = '"+aluno+"'";
+            query += "AND nome_aluno  LIKE '%"+aluno+"%'";
         }
         if(serie != null){
             query += " AND serie = '"+serie+"'";System.out.println("serie");

@@ -15,6 +15,7 @@ import br.com.william.Echamada.util.MapUtil;
 import br.com.william.Echamada.util.MetodosSql;
 import br.com.william.Echamada.util.Util;
 import br.com.william.Echamada.util.UtilLiberarAlunos;
+import br.com.william.Echamada.util.UtilLog;
 import br.com.william.Echamada.view.AbrirCriarSerie;
 import br.com.william.Echamada.view.AbrirTelas;
 import br.com.william.Echamada.view.AbrirUsuario;
@@ -1039,7 +1040,8 @@ public class FXML_principalController implements Initializable {
     
       @FXML
     void sairUsuario(ActionEvent event) throws Exception {
-       
+       UtilLog sair = new UtilLog();
+       sair.sairLog();
     }
    
        @FXML
