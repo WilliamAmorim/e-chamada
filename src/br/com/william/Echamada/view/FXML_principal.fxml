@@ -62,7 +62,6 @@
             <Separator prefHeight="30.0" prefWidth="21.0" />
             <Label text="Numero de linhas:" />
             <ComboBox fx:id="combo_numeroLinhas" prefHeight="25.0" prefWidth="82.0" promptText="25" />
-            <Separator layoutX="359.0" layoutY="10.0" prefHeight="30.0" prefWidth="21.0" />
         </items>
       </ToolBar>
     <SplitPane dividerPositions="0.5" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
@@ -245,14 +244,14 @@
                                           <Label text="ID Aluno:" />
                                           <Label layoutX="20.0" layoutY="27.0" text="Usuario:" GridPane.rowIndex="1" />
                                           <Label layoutX="20.0" layoutY="57.0" text="Senha:" GridPane.rowIndex="2" />
-                                          <TextField maxWidth="60.0" GridPane.columnIndex="1" />
-                                          <TextField layoutX="90.0" layoutY="13.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                          <TextField layoutX="90.0" layoutY="43.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                          <TextField fx:id="txt_idPais" maxWidth="60.0" GridPane.columnIndex="1" />
+                                          <TextField fx:id="txt_usuarioPais" layoutX="90.0" layoutY="13.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <TextField fx:id="txt_senhaPais" layoutX="90.0" layoutY="43.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                        </children>
                                     </GridPane>
                                     <HBox prefHeight="30.0" prefWidth="258.0">
                                        <children>
-                                          <Button defaultButton="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="86.0" text="Cadastrar" />
+                                          <Button defaultButton="true" mnemonicParsing="false" onAction="#BT_alterarPais" prefHeight="25.0" prefWidth="86.0" text="Alterar" />
                                        </children>
                                        <VBox.margin>
                                           <Insets top="6.0" />
@@ -288,16 +287,6 @@
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
-                        </TableView>
-                     </content>
-                </Tab>
-                <Tab text="Pais">
-                     <content>
-                        <TableView prefHeight="200.0" prefWidth="200.0">
-                          <columns>
-                            <TableColumn prefWidth="75.0" text="C1" />
-                            <TableColumn prefWidth="75.0" text="C2" />
-                          </columns>
                         </TableView>
                      </content>
                 </Tab>

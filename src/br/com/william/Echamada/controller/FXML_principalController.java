@@ -17,25 +17,19 @@ import br.com.william.Echamada.util.Util;
 import br.com.william.Echamada.util.UtilLiberarAlunos;
 import br.com.william.Echamada.util.UtilLog;
 import br.com.william.Echamada.view.AbrirCriarSerie;
-import br.com.william.Echamada.view.AbrirTelas;
 import br.com.william.Echamada.view.AbrirUsuario;
-import java.awt.Desktop.Action;
-import java.awt.Dialog;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Side;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
@@ -61,8 +55,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.web.WebView;
@@ -74,7 +66,54 @@ import javafx.stage.Stage;
  * @author willi
  */
 public class FXML_principalController implements Initializable {
-    //Estatisticas**********************************************************
+    
+    //ALTERAR Pais**************************************************************
+    @FXML
+    private TextField txt_idPais;
+
+    @FXML
+    private TextField txt_usuarioPais;
+
+    @FXML
+    private TextField txt_senhaPais;
+    String idPais = null;
+    private void preencherEditarPais(String id){
+        new Thread(){
+            public void run(){
+                Sql buscar = new Sql();
+                ArrayList values = new ArrayList();
+                values.add(id);
+                ArrayList r = new ArrayList();
+                String[] retorno = {"id_aluno","usuario","senha","id_pais"};
+                r = buscar.executeQuery("SELECT * FROM `pais` WHERE id_aluno = ?", values,retorno);               
+                    if(!r.isEmpty()){
+                        String a = r.get(0).toString();
+                        String b = a.replace("[", "").replace("]", "");
+                        String[] tokens = b.split(",");           
+                        txt_idPais.setText(tokens[0]);
+                        txt_usuarioPais.setText(tokens[1]);
+                        txt_senhaPais.setText(tokens[2]);
+                        idPais = tokens[3];
+                    }else{
+                        esvaziar();                        
+                    }
+            }
+        }.start();
+       
+    }
+    private void esvaziar(){
+        txt_idPais.setText(null);
+        txt_usuarioPais.setText(null);
+        txt_senhaPais.setText(null);
+    }
+    @FXML
+    void BT_alterarPais(ActionEvent event) {
+        MetodosSql alterar = new MetodosSql();
+        alterar.alterarPais(idPais,txt_idPais.getText(), txt_usuarioPais.getText(), txt_senhaPais.getText());
+    }
+    //**************************************************************************
+    
+    //Estatisticas**************************************************************    
     final NumberAxis xAxis = new NumberAxis();
     final NumberAxis yAxis = new NumberAxis();
     @FXML
@@ -594,6 +633,7 @@ public class FXML_principalController implements Initializable {
                     default:operacao = "update";System.out.println("Update");break;
         }
         i = tabela_aluno.getSelectionModel().getSelectedIndex();
+        preencherEditarPais(ConteudoTabelaAluno.get(i).getId().getValue());
         txt_nomeAluno.setText(ConteudoTabelaAluno.get(i).getAluno().getValue());
         txt_senhaAluno.setText(ConteudoTabelaAluno.get(i).getId().getValue());                        
         date_dataNascimentoAluno.setValue(Util.LOCAL_DATE(ConteudoTabelaAluno.get(i).getData_nascimento().getValue().trim()));        
@@ -611,6 +651,7 @@ public class FXML_principalController implements Initializable {
      * Apaga todas as informações do formulario de cadastro de aluno
      */
     public void sairDadosTabelaAlunos(){
+        esvaziar();
         switch(tabela_aluno.getSelectionModel().getSelectedIndex()){
                     case -1:operacao = "cadastrar";System.out.println("Cadastrando");break;
                     default:operacao = "update";System.out.println("Update");break;

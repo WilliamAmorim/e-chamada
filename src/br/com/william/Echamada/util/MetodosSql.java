@@ -48,6 +48,9 @@ public class MetodosSql extends Sql{
                 break;
                 case "update":
                     values.add(id);executeQuery("UPDATE `alunos` SET `nome_aluno`=?, `senha`=?, `data_nascimento`=?, `sexo`=?, `endereco`=?, `nome_pai`=?, `nome_mae`=?, `telefone_responsavel`=?, `serie`=?, `turma`=?, `turno`=? WHERE id_aluno = ?", values);
+                    
+                    values.clear();values.add(pai);values.add(id);
+                    executeQuery("UPDATE `pais` SET `usuario`=? WHERE id_aluno = ?",values);
                 break;
             }
         }else{
@@ -93,5 +96,23 @@ public class MetodosSql extends Sql{
         }
         System.out.println(query);
         return query;
+    }
+    
+    //**************************************************************************
+    
+    
+    public void alterarPais(String idPais,String id,String usuario,String senha){
+        if(!id.equals("") && usuario.equals("") && senha.equals("")){ 
+            ArrayList values = new ArrayList();
+            values.add(id);
+            values.add(usuario);
+            values.add(senha);
+            values.add(idPais);
+
+
+            executeQuery("UPDATE `pais` SET `id_aluno`=?,`usuario`=?,`senha`=? WHERE id_pais = ?",values);
+            values.clear();values.add(usuario);values.add(id);
+            executeQuery("UPDATE `alunos` SET `nome_pai`=? WHERE id_aluno = ?",values);
+        }
     }
 }
