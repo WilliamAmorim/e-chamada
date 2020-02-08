@@ -307,20 +307,29 @@
                   </Tab>
                   <Tab text="Historico">
                      <content>
-                        <TableView fx:id="tabela_historico" prefHeight="200.0" prefWidth="200.0">
-                          <columns>
-                            <TableColumn fx:id="colunaNomeHistorico" prefWidth="75.0" text="Nome" />
-                            <TableColumn fx:id="coluna_dataHistorico" prefWidth="75.0" text="Data" />
-                              <TableColumn fx:id="coluna_aula01" prefWidth="75.0" text="Aula 01" />
-                              <TableColumn fx:id="coluna_aula02" prefWidth="75.0" text="Aula 02" />
-                              <TableColumn fx:id="coluna_aula03" prefWidth="75.0" text="Aula 03" />
-                              <TableColumn fx:id="coluna_aula04" prefWidth="75.0" text="Aula 04" />
-                              <TableColumn fx:id="coluna_aula05" prefWidth="75.0" text="Aula 05" />
-                          </columns>
-                           <columnResizePolicy>
-                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                           </columnResizePolicy>
-                        </TableView>
+                        <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
+                          <items>
+                              <TableView fx:id="tabela_historico" prefHeight="200.0" prefWidth="200.0">
+                                <columns>
+                                  <TableColumn fx:id="colunaNomeHistorico" prefWidth="75.0" text="Nome" />
+                                  <TableColumn fx:id="coluna_dataHistorico" prefWidth="75.0" text="Data" />
+                                    <TableColumn fx:id="coluna_aula01" prefWidth="75.0" text="Aula 01" />
+                                    <TableColumn fx:id="coluna_aula02" prefWidth="75.0" text="Aula 02" />
+                                    <TableColumn fx:id="coluna_aula03" prefWidth="75.0" text="Aula 03" />
+                                    <TableColumn fx:id="coluna_aula04" prefWidth="75.0" text="Aula 04" />
+                                    <TableColumn fx:id="coluna_aula05" prefWidth="75.0" text="Aula 05" />
+                                </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                              <ToolBar prefHeight="40.0" prefWidth="200.0">
+                                <items>
+                                    <DatePicker fx:id="date_historico2" prefWidth="102.0" />
+                                </items>
+                              </ToolBar>
+                          </items>
+                        </SplitPane>
                      </content>
                   </Tab>
                   <Tab text="Mapa">
@@ -399,7 +408,7 @@
     <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="NEVER">
       <children>
             <ProgressIndicator fx:id="progress_status" prefHeight="0.0" prefWidth="18.0" />
-            <Label fx:id="label_statusProgress" layoutX="1052.0" layoutY="13.0" maxHeight="1.7976931348623157E308" maxWidth="-1.0" text="Alunos: 30">
+            <Label fx:id="label_statusProgress" layoutX="1052.0" layoutY="13.0" maxHeight="1.7976931348623157E308" maxWidth="-1.0" text="Alunos: 30" visible="false">
                <font>
                   <Font size="11.0" fx:id="x34" />
                </font>

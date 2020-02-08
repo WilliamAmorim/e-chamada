@@ -472,12 +472,13 @@ public class FXML_principalController implements Initializable {
     //**************************************************************************
     @FXML
     void BT_atualizar(ActionEvent event) {
+        AcompanharLocalizacao(false);
         progress("Atualizando..."); 
         listaTabelaAlunos("null");
         listaTabelaLiberados();
         progress(".");
         //progress.setVisible(true);
-      
+          AcompanharLocalizacao(true);
     }
     //Cadastrar e Editar aluno**************************************************
     @FXML
@@ -691,7 +692,7 @@ public class FXML_principalController implements Initializable {
             String b = a.replace("[", "").replace("]", "");
             String[] tokens = b.split(",");            
             ConteudoTabelaAluno.add(new AlunosBean("alsente",tokens[0].trim(),tokens[1].trim(),tokens[2].trim(),tokens[3].trim(), tokens[4].trim(),tokens[5].trim(),tokens[6].trim(),tokens[7].trim(),tokens[8].trim(),tokens[9].trim(),tokens[10].trim(),"-"));
-            listaHistorico(tokens[1].trim(),(int)Float.parseFloat(tokens[0]),tokens[10].trim() , tokens[11].trim());
+            listaHistorico(tokens[1].trim(),tokens[0],tokens[10].trim() , tokens[11].trim());
             alunosListados.add(tokens[1]);
         }
     }
@@ -813,6 +814,8 @@ public class FXML_principalController implements Initializable {
         combo_generoFiltro.setValue(null);
         listaTabelaAlunos("null");
     }
+    
+   
    
     /**
      * Initializes the controller class.
@@ -823,7 +826,7 @@ public class FXML_principalController implements Initializable {
         getChartData();
         //setStatisticas();
         //listaHorario.addAll();
-        progress.setVisible(true);  
+       // progress.setVisible(true);  
         progress_hora.setVisible(false);
         progress_status.setVisible(false);
           // listaHistorico();
@@ -927,11 +930,15 @@ public class FXML_principalController implements Initializable {
                     // Style all dates in March with a different color.
                     if (item.equals("Alsente")) {
                             setTextFill(Color.rgb(255, 64, 64));
-                            //setStyle("-fx-background-color: yellow");
-                    } else {
-                            setTextFill(Color.BLACK);
-                            setStyle("");
+                            //setStyle("-fx-background-color:#FF4040;"); 
+                    }if (item.equals("Presente")) {
+                            setTextFill(Color.rgb(67, 205, 128));
+                            //setStyle("-fx-background-color:#43CD80;");
                     }
+//                    }else {
+//                            setTextFill(Color.BLACK);
+//                            setStyle("");
+//                    }
             }
         }
     };
@@ -978,6 +985,9 @@ public class FXML_principalController implements Initializable {
         AcompanharLocalizacao(true);
     } 
     
+     @FXML
+    private DatePicker date_historico2;
+     
     /**
      * lista o historico de presença do aluno
      * @param nome 
@@ -985,17 +995,22 @@ public class FXML_principalController implements Initializable {
      * @param turno 
      * @param status 
      */
-    public void listaHistorico(String nome,int id,String turno,String status){
+    public void listaHistorico(String nome,String id,String turno,String status){
         ListaHistorico his = new ListaHistorico();
         ArrayList retorno = new ArrayList();
-        retorno = his.lista(nome, id, "",turno,status);
+        if(date_historico2.getValue() != null){
+            retorno = his.buscarHistorico(id,Util.converterData(date_historico2.getValue().toString(),"normal"),turno);
+        }else{
+            retorno = his.buscarHistorico(id,Util.time(),turno);
+        }
         System.out.println("ID:"+id);
        // for (int j = 0; j < retorno.size(); j++) {
        //System.out.println(retorno.get(0)+" - "+retorno.get(1)+" - "+retorno.get(2)+" - "+retorno.get(3)+" - "+retorno.get(4)+" - "+retorno.get(5)+" - "+retorno.get(6));
         //}
-        ConteudoTabelaHistorico.add(new TabelaHistoricoBean(retorno.get(0).toString(),retorno.get(1).toString(),retorno.get(2).toString(),retorno.get(3).toString(),retorno.get(4).toString(),retorno.get(5).toString(),retorno.get(6).toString()));
+        ConteudoTabelaHistorico.add(new TabelaHistoricoBean(nome,retorno.get(0).toString(),retorno.get(1).toString(),retorno.get(2).toString(),retorno.get(3).toString(),retorno.get(4).toString(),retorno.get(5).toString()));
         
     }
+      
     
     /**
      * Acompanha a presença do aluno
@@ -1015,13 +1030,13 @@ public class FXML_principalController implements Initializable {
                             int id = (int)Float.parseFloat(texto);
                             ListaHistorico lo = new ListaHistorico();          
                             HistoricoBean objeto = new HistoricoBean();
-                            objeto = lo.PegarLocalizacao(id,ListaHistorico.time());
+                            objeto = lo.PegarLocalizacao(id,Util.time());
                             boolean result =  false;                                                          
                             if(objeto.getLatitude() != null){                               
                                 result =  ListaHistorico.localizacao(Float.parseFloat(objeto.getLatitude()),Float.parseFloat(objeto.getLongitude()));                                                        
                             }
                             
-                            if(result){
+                            if(result){                                
                                 ConteudoTabelaAluno.get(j).getStatus().setValue("presente");                                
                                 ConteudoTabelaAluno.get(j).getHora().setValue(objeto.getHora());                                
                                 
@@ -1066,19 +1081,24 @@ public class FXML_principalController implements Initializable {
     public void colorir(){
         tabela_aluno.setRowFactory(tv -> new TableRow<AlunosBean>() {
             public void updateItem(AlunosBean item, boolean empty) {
-                super.updateItem(item, empty) ;                                
+                super.updateItem(item, empty) ;      
+                
                 if(item == null){
                     setStyle("");
                 }else if(Util.comparar(liberados,item.getAluno().getValue(),item.getSerie().getValue(),item.getTurma().getValue(),item.getTurno().getValue())){    
                     setStyle("-fx-background-color:#1E90FF;");   
+                    setTextFill(Color.rgb(67, 205, 128));
                     li++;
                 }else if(item.getStatus().getValue().equals("presente")){                    
-                    setStyle("-fx-background-color:#43CD80;");                     
+                    setStyle("-fx-background-color:#43CD80;");
+                    setTextFill(Color.rgb(67, 205, 128));
                     pre++;
                 }else if(item.getStatus().getValue().equals("alsente")){
-                    setStyle("-fx-background-color:#FF4040;");                    
+                    setStyle("-fx-background-color:#FF4040;");  
+                    setTextFill(Color.rgb(67, 205, 128));
                     fa++;
                 }
+                setTextFill(Color.rgb(67, 205, 128));
                 if((li+pre+fa) == ConteudoTabelaAluno.size() || ConteudoTabelaAluno.isEmpty()){
                     int p1 = 0,p2 = 0,p3 = 0;
                     if(ConteudoTabelaAluno.isEmpty()){

@@ -45,7 +45,7 @@ public class AbrirTelas extends Application{
         AbrirTelas.stage = stage;
         Parent fxmlInicio = FXMLLoader.load(getClass().getResource("FXML_principal.fxml"));
         ScenePrincipal = new Scene(fxmlInicio);
-        
+        stage.setTitle("E-chamada Beta");
         Parent fxmlLogin = FXMLLoader.load(getClass().getResource("FXML_login.fxml"));
         SceneLogin = new Scene(fxmlLogin);
         

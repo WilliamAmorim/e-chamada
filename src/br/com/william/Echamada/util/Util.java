@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -83,6 +84,11 @@ public class Util {
         SimpleDateFormat df;
         df = new SimpleDateFormat("d/MM/yyyy");
         return df.format(hoje);
+    }
+    public static int hora(){
+        Calendar hora = Calendar.getInstance();
+        return hora.get(Calendar.HOUR_OF_DAY)-1;
+        
     }
     
     public static String converterData(String data,String ordem){

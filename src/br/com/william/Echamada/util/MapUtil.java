@@ -37,6 +37,9 @@ public class MapUtil {
         ArrayList values = new ArrayList();
         values.add(id);
         values.add(hora);  
+        if("0".equals(data.substring(0, 1))){
+           data = data.substring(1);
+        }
         values.add(data);
         ArrayList resultado = new ArrayList();
         String[] retorno = {"latitude","longitude"};
@@ -63,7 +66,10 @@ public class MapUtil {
             Sql buscar = new Sql();
         ArrayList values = new ArrayList();
         values.add(id);
-        values.add(horas.get(i));        
+        values.add(horas.get(i));   
+        if("0".equals(data.substring(0, 1))){
+           data = data.substring(1);
+        }
         values.add(data);        
         ArrayList resultado = new ArrayList();
         String[] retorno = {"latitude","longitude"};
