@@ -84,18 +84,16 @@ public class UtilLog {
         
                 try{
                     if (file.delete()) {}
-                    Alert dialogoInfo = new Alert(Alert.AlertType.CONFIRMATION);                
-                    dialogoInfo.setHeaderText("Deletando o arquivo");
-                    dialogoInfo.setContentText("");
-                    dialogoInfo.showAndWait();
+                   
+                     System.exit(0);
                 }catch(Exception ex){
                     Alert dialogoInfo = new Alert(Alert.AlertType.WARNING);                
-                    dialogoInfo.setHeaderText("Erro ao deletar arquivo");
+                    dialogoInfo.setHeaderText("Erro ao sair");
                     dialogoInfo.setContentText("");
                     dialogoInfo.showAndWait();
                 }    
             
-            System.exit(0);
+           
 
         } catch (FileNotFoundException ex) {
             

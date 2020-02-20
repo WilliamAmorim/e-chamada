@@ -90,10 +90,10 @@ public class FXML_principalController implements Initializable {
                         String a = r.get(0).toString();
                         String b = a.replace("[", "").replace("]", "");
                         String[] tokens = b.split(",");           
-                        txt_idPais.setText(tokens[0]);
-                        txt_usuarioPais.setText(tokens[1]);
-                        txt_senhaPais.setText(tokens[2]);
-                        idPais = tokens[3];
+                        txt_idPais.setText(tokens[0].trim());
+                        txt_usuarioPais.setText(tokens[1].trim());
+                        txt_senhaPais.setText(tokens[2].trim());
+                        idPais = tokens[3].trim();
                     }else{
                         esvaziar();                        
                     }
@@ -110,6 +110,7 @@ public class FXML_principalController implements Initializable {
     void BT_alterarPais(ActionEvent event) {
         MetodosSql alterar = new MetodosSql();
         alterar.alterarPais(idPais,txt_idPais.getText(), txt_usuarioPais.getText(), txt_senhaPais.getText());
+        System.err.println("ID pais:"+idPais);
     }
     //**************************************************************************
     
@@ -762,7 +763,8 @@ public class FXML_principalController implements Initializable {
     private Button BT_liberar;
     
     private TableColumn coluna;
-
+    
+    private TableColumn colunaHistorico;
     @FXML
     private CheckBox check_todosLiberados;
     

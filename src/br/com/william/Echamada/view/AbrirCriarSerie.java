@@ -31,9 +31,11 @@ public class AbrirCriarSerie extends Application {
         AbrirCriarSerie.stage = stage;
         Parent fxmlInicio = FXMLLoader.load(getClass().getResource("FXML_criarSerie.fxml"));
         ScenePrincipal = new Scene(fxmlInicio);
+        stage.setMaximized(false);
+        stage.setResizable(false);        
+        stage.setMaximized(false);
         
-      
-        
+        stage.setTitle("Criar turma");
         
         
         /*

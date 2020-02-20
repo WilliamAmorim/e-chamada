@@ -31,8 +31,10 @@ public class AbrirUsuario extends Application {
         Parent fxmlInicio = FXMLLoader.load(getClass().getResource("FXML_usuarios.fxml"));
         ScenePrincipal = new Scene(fxmlInicio);
         
-      
-        
+      stage.setMaximized(false);
+        stage.setResizable(false);        
+        stage.setMaximized(false);
+        stage.setTitle("Criar chave de acesso");
         
         
         /*
